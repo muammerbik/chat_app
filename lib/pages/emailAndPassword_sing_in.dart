@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_sing_in_button.dart';
@@ -118,12 +119,12 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
           print(
             " oturum açan user id" + loginUser.userId.toString(),
           );
-      } on PlatformException catch (e) {
+      } on FirebaseAuthException catch (e) {
         debugPrint(
             "widget  oturum ama hata yakalandı " + Errors.showError(e.code));
         PlatformResponsiveAlertDialog(
-          title: "Oturum açma  hatassı!",
-          contents: Errors.showError(e.code),
+          title: "Kullanıcı giriş hatası !",
+          contents: "Bu kullanıcı db de mevcut değil",
           okButonText: "Tamam",
         ).showAllDialog(context);
       }
@@ -135,12 +136,12 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
           print(
             " kayıt olan user id" + createUser.userId.toString(),
           );
-      } on PlatformException catch (e) {
+      } on FirebaseAuthException catch (e) {
         debugPrint("widget kulllanici  oluşturma hata yakalandi" +
             Errors.showError(e.code));
         PlatformResponsiveAlertDialog(
-          title: "Kullanıcı giriş hatassı!",
-          contents: Errors.showError(e.code),
+          title: "Oturum açma  hatası!",
+          contents: "Bu Email zaten kullanılıyor! farklı birşey deneyin!",
           okButonText: "Tamam",
         ).showAllDialog(context);
       }
@@ -148,9 +149,11 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
   }
 
   void degistirFunc() {
-    setState(() {
-      myUserType =
-          myUserType == UserType.login ? UserType.Register : UserType.login;
-    });
+    setState(
+      () {
+        myUserType =
+            myUserType == UserType.login ? UserType.Register : UserType.login;
+      },
+    );
   }
 }

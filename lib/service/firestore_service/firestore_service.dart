@@ -62,6 +62,39 @@ class FirestoreServices implements DbBase {
         .collection("users")
         .doc(userId)
         .update({"profilUrl": profilPhotoUrl});
-        return true;
+    return true;
+  }
+
+  /*  @override
+  Future<List<UserModel>> getAllUser() async {
+    QuerySnapshot querySnapshot = await firestore.collection("users").get();
+    List<UserModel> tumKullaniciList = [];
+
+    for (DocumentSnapshot tekUser in querySnapshot.docs) {
+      UserModel _tekUser = UserModel.fromMap(tekUser.data());
+      tumKullaniciList.add(_tekUser);
+    }
+
+ /*    tumKullaniciList =
+        querySnapshot.docs.map((e) => UserModel.fromMap(e.data())).toList(); */
+
+    return tumKullaniciList;
+  } */
+
+  //firestordaki  tüm kullanıcıları  tek tek gezdim ve ekranda yazdırmak için listeledim.
+  @override
+  Future<List<UserModel>> getAllUser() async {
+    QuerySnapshot querySnapshot = await firestore.collection("users").get();
+    List<UserModel> tumKullaniciList = [];
+
+    for (DocumentSnapshot tekUser in querySnapshot.docs) {
+      var data = tekUser.data();
+      if (data is Map<String, dynamic>) {
+        UserModel _tekUser = UserModel.fromMap(data);
+        tumKullaniciList.add(_tekUser);
+      }
+    }
+
+    return tumKullaniciList;
   }
 }

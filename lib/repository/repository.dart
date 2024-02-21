@@ -51,6 +51,7 @@ class Repository implements AuthBase {
       return await fakeAuthService.googleWithSingIn();
     } else {
       UserModel? usermodel = await firebaseAuthService.googleWithSingIn();
+      // google ile giriş yaptıktan sonra  verileri firebase firestore kaydettim. Ardından kaydedilen verileri okudum terminalde gösterdim.
       bool result = await fireStoreService.saveUser(usermodel!);
 
       if (result) {
@@ -61,7 +62,7 @@ class Repository implements AuthBase {
     }
   }
 
-// oluşturulan kullanıcının ıd değerini firestora kaydetmek istiyorum. bu nedenle bu işlemi repoda gerçekleştirdim.
+// oluşturulan kullanıcının id değerini firestora kaydetmek istiyorum. bu nedenle bu işlemi repoda gerçekleştirdim.
   @override
   Future<UserModel?> createUserWithSingIn(String email, String password) async {
     if (appMode == AppMode.DEBUG) {
@@ -106,8 +107,17 @@ class Repository implements AuthBase {
     } else {
       var profilPhotoUrl =
           await firebaseStorage.uploadFile(userId, fileType, profilePhoto!);
-                await fireStoreService.updateProfilePhoto( userId, profilPhotoUrl );
+      await fireStoreService.updateProfilePhoto(userId, profilPhotoUrl);
       return profilPhotoUrl;
+    }
+  }
+
+  Future<List<UserModel>> getAllUser() async {
+    if (appMode == AppMode.DEBUG) {
+      return [];
+    } else {
+      var tumKullanicilarListesi = await fireStoreService.getAllUser();
+      return tumKullanicilarListesi;
     }
   }
 }

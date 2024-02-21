@@ -39,7 +39,7 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
         "currentt user hatası viewmodel $e",
       );
       return null;
-    } finally { 
+    } finally {
       state = ViewState.idly;
     }
   }
@@ -124,7 +124,7 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
   ) async {
     var result = await repository.updateUserName(userId, newUserName);
     if (result) {
-      userModel!.userName == newUserName;
+      userModel!.userName = newUserName;
     }
     return result;
   }
@@ -134,5 +134,10 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
     var indirmeLink =
         await repository.uploadFile(userId, fileType, profilePhoto);
     return indirmeLink;
+  }
+
+  Future<List<UserModel>> getAllUser() async{
+    var tumKullanicilarListesi =  await repository.getAllUser();
+    return tumKullanicilarListesi;
   }
 }

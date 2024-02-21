@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_sing_in_button.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/platform_widgets/platform_responsive_alert_dialog.dart';
@@ -197,6 +196,13 @@ class _ProfilePageState extends State<ProfilePage> {
       var url = await _userModel.uploadFile(
           _userModel.userModel!.userId, "profil_photo", profilePhoto);
       print("gelen url = " + url);
+      if (url != null) {
+        PlatformResponsiveAlertDialog(
+          title: "Profil başarıyla yüklendi !",
+          contents: "profil resmi işlemşeri tamamalandı.",
+          okButonText: "Tamam",
+        ).showAllDialog(context);
+      }
     }
   }
 }

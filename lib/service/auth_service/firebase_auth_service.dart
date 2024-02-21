@@ -5,9 +5,7 @@ import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_bas
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthService implements AuthBase {
-
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
   @override
   Future<UserModel?> currentUser() async {
     try {
@@ -23,7 +21,7 @@ class FirebaseAuthService implements AuthBase {
   }
 
   UserModel? _userFromFirebase(User user) {
-    return UserModel(userId: user.uid, email: user.email.toString());
+    return UserModel(userId: user.uid, email: user.email.toString(),);
   }
 
   @override
@@ -42,6 +40,7 @@ class FirebaseAuthService implements AuthBase {
   @override
   Future<bool> singOut() async {
     try {
+      //firebaseden de çıkıs yapmak için yazdım!
       final googleSignIn = GoogleSignIn();
       googleSignIn.signOut();
       await firebaseAuth.signOut();
@@ -85,6 +84,7 @@ class FirebaseAuthService implements AuthBase {
         email: email, password: password);
     return _userFromFirebase(userCredential.user!);
   }
+
   @override
   Future<UserModel?> emailAndPasswordWithSingIn(
       String email, String password) async {
