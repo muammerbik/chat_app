@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_crashlytics_usage/pages/konusma_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -23,14 +24,26 @@ class UsersPage extends StatelessWidget {
                 itemCount: tumKullanicilar.length,
                 itemBuilder: (context, index) {
                   var oankiKullanici = snapshot.data![index];
-// fireStordaki tüm kullanıcılar geldi, tüm kullanıclar arasında kullanıcı kendiyle konuşamayacağı için kullanıcının kendisini gelen tüm kullanıcılar arasından çıkarttım.
+                  // fireStordaki tüm kullanıcılar geldi, tüm kullanıclar arasında kullanıcı kendiyle konuşamayacağı
+                  //için kullanıcının kendisini gelen tüm kullanıcılar arasından çıkarttım.
                   if (oankiKullanici.userId != _userModel.userModel!.userId) {
-                    return ListTile(
-                      title: Text(oankiKullanici.userName!),
-                      subtitle: Text(oankiKullanici.email),
-                      leading: CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(oankiKullanici.profilUrl!)),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true).push(
+                          MaterialPageRoute(
+                            builder: (context) => KonusmaPage(
+                                sohbetEdilenUser: oankiKullanici,
+                                currentUser: _userModel.userModel!),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        title: Text(oankiKullanici.userName!),
+                        subtitle: Text(oankiKullanici.email),
+                        leading: CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(oankiKullanici.profilUrl!)),
+                      ),
                     );
                   } else {
                     return Container();

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
+import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/repository/repository.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_base.dart';
@@ -136,8 +137,17 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
     return indirmeLink;
   }
 
-  Future<List<UserModel>> getAllUser() async{
-    var tumKullanicilarListesi =  await repository.getAllUser();
+  Future<List<UserModel>> getAllUser() async {
+    var tumKullanicilarListesi = await repository.getAllUser();
     return tumKullanicilarListesi;
+  }
+
+  Stream<List<MesajModel>> getMessagers(
+      String currentUserId, String sohbetEdilenUserId) {
+    return repository.getMessagers(currentUserId, sohbetEdilenUserId);
+  }
+
+  Future<bool> saveMessages(MesajModel kaydedilecekMesaj) async {
+   return await repository.saveMessages(kaydedilecekMesaj);
   }
 }

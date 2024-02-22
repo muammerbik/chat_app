@@ -1,4 +1,5 @@
 //katmanlı mimari ile yazılan kodların bakımı  ve kullanımı daha kolaydır. aut işlemleri için katmanlı mimari kullanmıştık, firestore içinde ayrı bir katmanlı mimari kullanacağız.
+import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 
 abstract class DbBase {
@@ -11,4 +12,9 @@ abstract class DbBase {
   Future<bool> updateProfilePhoto(String userId, String profilPhotoUrl);
 
   Future<List<UserModel>> getAllUser();
+
+  Stream<List<MesajModel>> getMessages(
+      String currentUserId, String sohbetEdilenUserId);
+
+  Future<bool> saveMessages(MesajModel kaydedilecekMesaj);
 }

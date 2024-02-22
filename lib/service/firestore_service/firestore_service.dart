@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/firestore_service/db_base.dart';
 
@@ -65,28 +66,11 @@ class FirestoreServices implements DbBase {
     return true;
   }
 
-  /*  @override
-  Future<List<UserModel>> getAllUser() async {
-    QuerySnapshot querySnapshot = await firestore.collection("users").get();
-    List<UserModel> tumKullaniciList = [];
-
-    for (DocumentSnapshot tekUser in querySnapshot.docs) {
-      UserModel _tekUser = UserModel.fromMap(tekUser.data());
-      tumKullaniciList.add(_tekUser);
-    }
-
- /*    tumKullaniciList =
-        querySnapshot.docs.map((e) => UserModel.fromMap(e.data())).toList(); */
-
-    return tumKullaniciList;
-  } */
-
   //firestordaki  tüm kullanıcıları  tek tek gezdim ve ekranda yazdırmak için listeledim.
   @override
   Future<List<UserModel>> getAllUser() async {
     QuerySnapshot querySnapshot = await firestore.collection("users").get();
     List<UserModel> tumKullaniciList = [];
-
     for (DocumentSnapshot tekUser in querySnapshot.docs) {
       var data = tekUser.data();
       if (data is Map<String, dynamic>) {
@@ -94,7 +78,54 @@ class FirestoreServices implements DbBase {
         tumKullaniciList.add(_tekUser);
       }
     }
-
     return tumKullaniciList;
   }
+
+/*eğer sadece bir mesajı döndürmek isteseydim o zaman bu yapıyı kullanırdım.
+  @override
+  Stream<MesajModel> getMessages(
+      String currentUserId, String sohbetEdilenUserId) {
+    var snapshot = firestore
+        .collection("konusanlar")
+        .doc(currentUserId + "--" + sohbetEdilenUserId)
+        .collection("mesajlar")
+        doc(currentUserıd)
+        .snapshots();
+    return snapshot.map((event)=> MesajModel.fromMap(event.data(),),);}*/
+  //  Stream yapısı anlık olarak verileri dinlemek için kullanılır, İçerisinde mesajlar olan bir liste döndürdüm.Sohbetteki tüm mesajları almamı sağlayacak.
+  @override
+  Stream<List<MesajModel>> getMessages(
+      String currentUserId, String sohbetEdilenUserId) {
+    var snapshot = firestore
+        .collection("konusanlar")
+        .doc("$currentUserId--$sohbetEdilenUserId")
+        .collection("mesajlar")
+        .orderBy("date")
+        .snapshots();
+    return snapshot.map(
+      (snapshot) => snapshot.docs
+          .map(
+            (event) => MesajModel.fromMap(
+              event.data(),
+            ),
+          )
+          .toList(),
+    );
+  }
+    // Mesajlaşma iki kişi arsında olan birseydir.Mesaj gönderen ve mesaj alan kişiler vardır.ve ortada bir mesaj dökümanı olmalı.mesaj gönderen ve mesaj alan kişileri doc olarak iki kere karşılıklı kaydetmemiz gerek. Bunun sebebi kullanıcılardan biri mesajları sildiğinde silmeyen kişideki verilerin gidebileceğindendir
+  // mesajı db ye kaydederken iki farklı yere kaydedip, farklı idler vermem gerekiyor.
+  @override
+  Future<bool> saveMessages(MesajModel kaydedilecekMesaj) async {
+    var mesajId =firestore.collection("konusanlar").doc().id;
+    var myDocumentId = kaydedilecekMesaj.kimden+"--"+kaydedilecekMesaj.kime;
+    var receiverDocumentId=kaydedilecekMesaj.kime +"--"+kaydedilecekMesaj.kimden;
+
+var kaydedilecekIdninMapi=kaydedilecekMesaj.toMap();
+   await firestore.collection("konusanlar").doc(myDocumentId).collection("mesajlar").doc(mesajId).set(kaydedilecekIdninMapi);
+   kaydedilecekIdninMapi.update("bendenMi", (value) => false);
+  await firestore.collection("konusanlar").doc(receiverDocumentId).collection("mesajlar").doc(mesajId).set(kaydedilecekIdninMapi);
+   return true;
+  }
+
+
 }

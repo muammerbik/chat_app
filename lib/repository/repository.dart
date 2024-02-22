@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
+import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_base.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/fake_auth_service.dart';
@@ -118,6 +119,23 @@ class Repository implements AuthBase {
     } else {
       var tumKullanicilarListesi = await fireStoreService.getAllUser();
       return tumKullanicilarListesi;
+    }
+  }
+
+  Stream<List<MesajModel>> getMessagers(
+      String currentUserId, String sohbetEdilenUserId) {
+    if (appMode == AppMode.DEBUG) {
+      return  Stream.empty();
+    } else {
+      return fireStoreService.getMessages(currentUserId, sohbetEdilenUserId);
+    }
+  }
+
+  Future<bool> saveMessages(MesajModel kaydedilecekMesaj) async {
+    if (appMode == AppMode.DEBUG) {
+      return true;
+    } else {
+      return await fireStoreService.saveMessages(kaydedilecekMesaj);
     }
   }
 }
