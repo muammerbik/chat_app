@@ -20,12 +20,20 @@ class KonusmaPage extends StatefulWidget {
 
 class _KonusmaPageState extends State<KonusmaPage> {
   TextEditingController textEditingController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     UserViewmodel _userModel = Provider.of<UserViewmodel>(context);
-    UserModel currentUser = widget.currentUser;
-    UserModel sohbetEdilenUser = widget.sohbetEdilenUser;
+    UserModel _currentUser = widget.currentUser;
+    UserModel _sohbetEdilenUser = widget.sohbetEdilenUser;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sohbet"),
@@ -36,18 +44,22 @@ class _KonusmaPageState extends State<KonusmaPage> {
             Expanded(
               child: StreamBuilder<List<MesajModel>>(
                 stream: _userModel.getMessagers(
-                    currentUser.userId, sohbetEdilenUser.userId),
+                    _currentUser.userId, _sohbetEdilenUser.userId),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return const Center(
+                    return Center(
                       child: CircularProgressIndicator(),
                     );
                   }
                   List<MesajModel> tumMessajlar = snapshot.data!;
+
                   return ListView.builder(
+                    reverse: true,
+                    controller: _scrollController,
                     itemCount: tumMessajlar.length,
                     itemBuilder: (context, index) {
-                      return Text(tumMessajlar[index].mesaj);
+                      return konusmaBalonlari(
+                          tumMessajlar[tumMessajlar.length - 1 - index]);
                     },
                   );
                 },
@@ -83,17 +95,22 @@ class _KonusmaPageState extends State<KonusmaPage> {
                         color: Colors.white,
                       ), //Butona tıklandığında stream yapısıyla beraber ekranda  yazılacak mesajları kaydediyorum.
                       onPressed: () async {
-                        if (textEditingController.text.trim().length > 0) {
+                        if (textEditingController.text.trim().isNotEmpty) {
                           MesajModel kaydedilecekMesaj = MesajModel(
-                              kimden: currentUser.userId,
-                              kime: sohbetEdilenUser.userId,
+                              kimden: _currentUser.userId,
+                              kime: _sohbetEdilenUser.userId,
                               bendenMi: true,
                               mesaj: textEditingController.text);
 
                           var result =
-                             await _userModel.saveMessages(kaydedilecekMesaj);
+                              await _userModel.saveMessages(kaydedilecekMesaj);
                           if (result) {
                             textEditingController.clear();
+                            _scrollController.animateTo(
+                              0, // ListView'in en altına kaydır
+                              duration: Duration(milliseconds: 10),
+                              curve: Curves.easeOut,
+                            );
                           }
                         }
                       },
@@ -106,5 +123,80 @@ class _KonusmaPageState extends State<KonusmaPage> {
         ),
       ),
     );
+  }
+
+  Widget konusmaBalonlari(MesajModel oankiMesaj) {
+    Color messageSender = Colors.purple;
+    Color messageField = Colors.indigo;
+    var fromMe = oankiMesaj.bendenMi;
+
+    if (fromMe) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Flexible(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: messageSender,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        oankiMesaj.mesaj,
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                Text("12.45"),
+              ],
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  backgroundImage:
+                      NetworkImage(widget.sohbetEdilenUser.profilUrl!),
+                ),
+                SizedBox(
+                  width: 2,
+                ),
+                Flexible(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: messageField,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        oankiMesaj.mesaj,
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                Text("11.20"),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

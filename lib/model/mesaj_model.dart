@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MesajModel {
@@ -48,7 +47,7 @@ class MesajModel {
     return MesajModel(
       kimden: map['kimden'] as String,
       kime: map['kime'] as String,
-      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      date: map['date'] != null ? (map['date'] as Timestamp).toDate() : null,
       bendenMi: map['bendenMi'] as bool,
       mesaj: map['mesaj'] as String,
     );

@@ -98,7 +98,7 @@ class FirestoreServices implements DbBase {
       String currentUserId, String sohbetEdilenUserId) {
     var snapshot = firestore
         .collection("konusanlar")
-        .doc("$currentUserId--$sohbetEdilenUserId")
+        .doc(currentUserId+"--"+sohbetEdilenUserId)
         .collection("mesajlar")
         .orderBy("date")
         .snapshots();
@@ -116,7 +116,8 @@ class FirestoreServices implements DbBase {
   // mesajı db ye kaydederken iki farklı yere kaydedip, farklı idler vermem gerekiyor.
   @override
   Future<bool> saveMessages(MesajModel kaydedilecekMesaj) async {
-    var mesajId =firestore.collection("konusanlar").doc().id;
+    var mesajId =firestore.collection("konusanlar").doc().id;//yazılan mesajı içinde barındıracak bir alt id olusturdum.
+    //mesajlaşma karşıklı olacağı için ,karşılıklı olarak yazılacak mesajları kaydettim.
     var myDocumentId = kaydedilecekMesaj.kimden+"--"+kaydedilecekMesaj.kime;
     var receiverDocumentId=kaydedilecekMesaj.kime +"--"+kaydedilecekMesaj.kimden;
 
