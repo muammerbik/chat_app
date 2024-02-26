@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_firebase_crashlytics_usage/model/konusma_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/firestore_service/db_base.dart';
@@ -81,6 +82,27 @@ class FirestoreServices implements DbBase {
     return tumKullaniciList;
   }
 
+  @override
+//sohbet ettiğim tüm kullanıcıları bir listeye aldım ve bu listeyi sohbetPage de göstereceğim.
+  Future<List<KonusmaModel>> getAllConversations(String userId) async {
+    QuerySnapshot querySnapshot = await firestore
+        .collection("konusanlar")
+        .where("konusma_sahibi", isEqualTo: userId)
+        .orderBy("olusturulma_tarihi", descending: true)
+        .get();
+
+    List<KonusmaModel> conversationsList = [];
+    for (DocumentSnapshot talkUser in querySnapshot.docs) {
+      var data = talkUser.data();
+      if (data is Map<String, dynamic>) {
+        KonusmaModel _talkUser = KonusmaModel.fromMap(data);
+        conversationsList.add(_talkUser);
+      }
+    }
+
+    return conversationsList;
+  }
+
 /*eğer sadece bir mesajı döndürmek isteseydim o zaman bu yapıyı kullanırdım.
   @override
   Stream<MesajModel> getMessages(
@@ -98,7 +120,7 @@ class FirestoreServices implements DbBase {
       String currentUserId, String sohbetEdilenUserId) {
     var snapshot = firestore
         .collection("konusanlar")
-        .doc(currentUserId+"--"+sohbetEdilenUserId)
+        .doc(currentUserId + "--" + sohbetEdilenUserId)
         .collection("mesajlar")
         .orderBy("date")
         .snapshots();
@@ -112,21 +134,56 @@ class FirestoreServices implements DbBase {
           .toList(),
     );
   }
-    // Mesajlaşma iki kişi arsında olan birseydir.Mesaj gönderen ve mesaj alan kişiler vardır.ve ortada bir mesaj dökümanı olmalı.mesaj gönderen ve mesaj alan kişileri doc olarak iki kere karşılıklı kaydetmemiz gerek. Bunun sebebi kullanıcılardan biri mesajları sildiğinde silmeyen kişideki verilerin gidebileceğindendir
+
+  // Mesajlaşma iki kişi arsında olan birseydir.Mesaj gönderen ve mesaj alan kişiler vardır.ve ortada bir mesaj dökümanı olmalı.mesaj gönderen ve mesaj alan kişileri doc olarak iki kere karşılıklı kaydetmemiz gerek. Bunun sebebi kullanıcılardan biri mesajları sildiğinde silmeyen kişideki verilerin gidebileceğindendir
   // mesajı db ye kaydederken iki farklı yere kaydedip, farklı idler vermem gerekiyor.
   @override
   Future<bool> saveMessages(MesajModel kaydedilecekMesaj) async {
-    var mesajId =firestore.collection("konusanlar").doc().id;//yazılan mesajı içinde barındıracak bir alt id olusturdum.
+    var mesajId = firestore
+        .collection("konusanlar")
+        .doc()
+        .id; //yazılan mesajı içinde barındıracak bir alt id olusturdum.
     //mesajlaşma karşıklı olacağı için ,karşılıklı olarak yazılacak mesajları kaydettim.
-    var myDocumentId = kaydedilecekMesaj.kimden+"--"+kaydedilecekMesaj.kime;
-    var receiverDocumentId=kaydedilecekMesaj.kime +"--"+kaydedilecekMesaj.kimden;
+    var myDocumentId = kaydedilecekMesaj.kimden + "--" + kaydedilecekMesaj.kime;
+    var receiverDocumentId =
+        kaydedilecekMesaj.kime + "--" + kaydedilecekMesaj.kimden;
 
-var kaydedilecekIdninMapi=kaydedilecekMesaj.toMap();
-   await firestore.collection("konusanlar").doc(myDocumentId).collection("mesajlar").doc(mesajId).set(kaydedilecekIdninMapi);
-   kaydedilecekIdninMapi.update("bendenMi", (value) => false);
-  await firestore.collection("konusanlar").doc(receiverDocumentId).collection("mesajlar").doc(mesajId).set(kaydedilecekIdninMapi);
-   return true;
+    var kaydedilecekIdninMapi = kaydedilecekMesaj.toMap();
+    await firestore
+        .collection("konusanlar")
+        .doc(myDocumentId)
+        .collection("mesajlar")
+        .doc(mesajId)
+        .set(kaydedilecekIdninMapi);
+    kaydedilecekIdninMapi.update("bendenMi", (value) => false);
+
+    await firestore
+        .collection("konusanlar")
+        .doc(receiverDocumentId)
+        .collection("mesajlar")
+        .doc(mesajId)
+        .set(kaydedilecekIdninMapi);
+
+    /*
+      .Kullanıcılar sayfasında kayıtlı olan herkesi görüyorken, sohbet alanında sadece mesajlaştığım kullanıcıları görmek istiyorum.bu yüzden tüm kullanıcılar içinden konuştuklarımı filtrelemeye çalıştığımda firebase çok fazla okuma yapmış oluyor. Okumadan tasarruf edip sadece sohbet ettiğim kullanıcıları almak için konusanlar collectionundan oanki kullanıcı ve sohbet ettiği kişi için yeni bir döküman oluşturdum.Sohbet eden kullanıcıların ikisi de bu verilere sahip olsun diye hem oanki user hemde sohbet edilen için id kullanarak bu verileri kaydettim.
+       */
+
+    await firestore.collection("konusanlar").doc(myDocumentId).set({
+      "konusma_sahibi": kaydedilecekMesaj.kimden,
+      "kimle_konusuyor": kaydedilecekMesaj.kime,
+      "son_yollanan_mesaj": kaydedilecekMesaj.mesaj,
+      "konusma_görüldü": false,
+      "olusturulma_tarihi": FieldValue.serverTimestamp(),
+    });
+
+    await firestore.collection("konusanlar").doc(receiverDocumentId).set({
+      "konusma_sahibi": kaydedilecekMesaj.kime,
+      "kimle_konusuyor": kaydedilecekMesaj.kimden,
+      "son_yollanan_mesaj": kaydedilecekMesaj.mesaj,
+      "konusma_görüldü": false,
+      "olusturulma_tarihi": FieldValue.serverTimestamp(),
+    });
+
+    return true;
   }
-
-
 }

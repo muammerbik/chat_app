@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
+import 'package:flutter_firebase_crashlytics_usage/model/konusma_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_base.dart';
@@ -17,6 +18,8 @@ class Repository implements AuthBase {
   FirebaseStorageService firebaseStorage = locator<FirebaseStorageService>();
 
   AppMode appMode = AppMode.RELEASE;
+
+  List<UserModel> tumKullanicilarListesi = [];
 
   @override
   Future<UserModel?> currentUser() async {
@@ -117,7 +120,7 @@ class Repository implements AuthBase {
     if (appMode == AppMode.DEBUG) {
       return [];
     } else {
-      var tumKullanicilarListesi = await fireStoreService.getAllUser();
+      tumKullanicilarListesi = await fireStoreService.getAllUser();
       return tumKullanicilarListesi;
     }
   }
@@ -125,7 +128,7 @@ class Repository implements AuthBase {
   Stream<List<MesajModel>> getMessagers(
       String currentUserId, String sohbetEdilenUserId) {
     if (appMode == AppMode.DEBUG) {
-      return  Stream.empty();
+      return Stream.empty();
     } else {
       return fireStoreService.getMessages(currentUserId, sohbetEdilenUserId);
     }
@@ -137,5 +140,43 @@ class Repository implements AuthBase {
     } else {
       return await fireStoreService.saveMessages(kaydedilecekMesaj);
     }
+  }
+
+  Future<List<KonusmaModel>> getAllConversations(String userId) async {
+    if (appMode == AppMode.DEBUG) {
+      return [];
+    } else {
+      var konusmaListesi = await fireStoreService.getAllConversations(userId);
+      //konusmaModel sınıfımda kullanıcının username ve profilUrl değerini tutmadığım için, bu değerleri userModel sınıfından alıp kullanmaya çalışaçağım.bu nedenle yukarıda her yerden erişebileceğim tumKullanicilarListesi  listesini olusturdum.daha sonra userModeldeki bu verileri konusmaModele atayarak verileri istediğim verilere erişim sağladım.aşagıda  intarnete çıkmadan ve çıkarak ortamın durumuna göre verilere erişim sağlanıyor.
+//
+      for (var oankiKonusma in konusmaListesi) {
+        var userListesindekiKullanici =
+            listedeUserBul(oankiKonusma.kimle_konusuyor);
+        if (userListesindekiKullanici != null) {
+          print("VERİLER LOCAL CACHEDEN OKUNDU");
+          oankiKonusma.konusulanUserName = userListesindekiKullanici.userName;
+          oankiKonusma.konusulanUserProfilUrl =
+              userListesindekiKullanici.profilUrl;
+        } else {
+          print("VERİLER VERİTABANINDAN  OKUNDU");
+          var veritabanindanOkunanUser =
+              await fireStoreService.readUser(oankiKonusma.kimle_konusuyor);
+          oankiKonusma.konusulanUserName = veritabanindanOkunanUser.userName;
+          oankiKonusma.konusulanUserProfilUrl =
+              veritabanindanOkunanUser.profilUrl;
+        }
+      }
+      return konusmaListesi;
+    }
+  }
+
+  UserModel? listedeUserBul(String userId) {
+    // tüm elemanları gezerken ki userId ile kullanıcının userIdsi eşitse  bilgilerini getir.
+    for (int i = 0; i < tumKullanicilarListesi.length; i++) {
+      if (tumKullanicilarListesi[i].userId == userId) {
+        return tumKullanicilarListesi[i];
+      }
+    }
+    return null;
   }
 }

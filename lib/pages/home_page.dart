@@ -5,6 +5,7 @@ import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/tab_item.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/profile_page.dart';
+import 'package:flutter_firebase_crashlytics_usage/pages/sohbet_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/users_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_base.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/firebase_auth_service.dart';
@@ -29,12 +30,14 @@ class _HomePageState extends State<HomePage> {
     return {
       TabItem.Kullanicilar: UsersPage(),
       TabItem.Profil: ProfilePage(),
+      TabItem.Sohbet: SohbetPage(),
     };
   }
 
   Map<TabItem, GlobalKey<NavigatorState>> navigatorKey = {
     TabItem.Kullanicilar: GlobalKey<NavigatorState>(),
     TabItem.Profil: GlobalKey<NavigatorState>(),
+    TabItem.Sohbet: GlobalKey<NavigatorState>(),
   };
 
   @override

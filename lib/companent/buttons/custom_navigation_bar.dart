@@ -35,6 +35,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
       tabBar: CupertinoTabBar(
         items: [
           navBarItem(TabItem.Kullanicilar),
+          navBarItem(TabItem.Sohbet),
           navBarItem(TabItem.Profil),
         ],
         onTap: (index) => widget.onSelecetedTab(

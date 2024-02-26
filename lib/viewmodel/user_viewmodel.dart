@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
+import 'package:flutter_firebase_crashlytics_usage/model/konusma_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/repository/repository.dart';
@@ -148,6 +149,10 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
   }
 
   Future<bool> saveMessages(MesajModel kaydedilecekMesaj) async {
-   return await repository.saveMessages(kaydedilecekMesaj);
+    return await repository.saveMessages(kaydedilecekMesaj);
+  }
+
+  Future<List<KonusmaModel>> getAllConversations(String userId) async {
+    return await repository.getAllConversations(userId);
   }
 }
