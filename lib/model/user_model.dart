@@ -41,6 +41,16 @@ class UserModel {
     );
   }
 
+   UserModel.withIdAndProfileUrl({
+    required this.userId,
+    String? profilUrl,
+  }) : email = '',
+       userName = null,
+       profilUrl = profilUrl,
+       createdAt = null,
+       updatedAt = null,
+       seviye = 1;
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'userId': userId,
@@ -58,21 +68,20 @@ class UserModel {
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
-  return UserModel(
-    userId: map['userId'] as String,
-    email: map['email'] as String,
-    userName: map['userName'] as String?,
-    profilUrl: map['profilUrl'] as String?,
-    createdAt: map['createdAt'] != null
-        ? (map['createdAt'] as Timestamp).toDate()
-        : null,
-    updatedAt: map['updatedAt'] != null
-        ? (map['updatedAt'] as Timestamp).toDate()
-        : null,
-    seviye: map['seviye'] as int?,
-  );
-}
-
+    return UserModel(
+      userId: map['userId'] as String,
+      email: map['email'] as String,
+      userName: map['userName'] as String?,
+      profilUrl: map['profilUrl'] as String?,
+      createdAt: map['createdAt'] != null
+          ? (map['createdAt'] as Timestamp).toDate()
+          : null,
+      updatedAt: map['updatedAt'] != null
+          ? (map['updatedAt'] as Timestamp).toDate()
+          : null,
+      seviye: map['seviye'] as int?,
+    );
+  }
 
   String toJson() => json.encode(toMap());
 
