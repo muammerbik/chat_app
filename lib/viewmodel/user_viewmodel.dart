@@ -137,11 +137,11 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
         await repository.uploadFile(userId, fileType, profilePhoto);
     return indirmeLink;
   }
-
+/* 
   Future<List<UserModel>> getAllUser() async {
     var tumKullanicilarListesi = await repository.getAllUser();
     return tumKullanicilarListesi;
-  }
+  } */
 
   Stream<List<MesajModel>> getMessagers(
       String currentUserId, String sohbetEdilenUserId) {
@@ -155,4 +155,8 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
   Future<List<KonusmaModel>> getAllConversations(String userId) async {
     return await repository.getAllConversations(userId);
   }
+
+ Future<List<UserModel>> getUserWithPagination(UserModel? ensonGetirilenUser, int getirilecekElemanSayisi) async{
+    return await repository.getUserWithPagination(ensonGetirilenUser, getirilecekElemanSayisi);
+ }
 }

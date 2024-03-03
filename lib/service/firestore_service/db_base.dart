@@ -12,7 +12,10 @@ abstract class DbBase {
 
   Future<bool> updateProfilePhoto(String userId, String profilPhotoUrl);
 
-  Future<List<UserModel>> getAllUser();
+  //Future<List<UserModel>> getAllUser();
+  //verilerin futureBuilder ile hepsi birden geliyordu.Pagination ile verilerin hepsini birden getirmek yerine gerektiği kadar getirdim.
+  Future<List<UserModel>> getUserWithPagination(
+      UserModel ensonGetirilenUser, int getirilecekElemanSayisi);
 
   Stream<List<MesajModel>> getMessages(
       String currentUserId, String sohbetEdilenUserId);

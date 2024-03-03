@@ -67,7 +67,7 @@ class FirestoreServices implements DbBase {
     return true;
   }
 
-  //firestordaki  tüm kullanıcıları  tek tek gezdim ve ekranda yazdırmak için listeledim.
+  /*  //firestordaki  tüm kullanıcıları  tek tek gezdim ve ekranda yazdırmak için listeledim.
   @override
   Future<List<UserModel>> getAllUser() async {
     QuerySnapshot querySnapshot = await firestore.collection("users").get();
@@ -80,7 +80,7 @@ class FirestoreServices implements DbBase {
       }
     }
     return tumKullaniciList;
-  }
+  } */
 
   @override
 //sohbet ettiğim tüm kullanıcıları bir listeye aldım ve bu listeyi sohbetPage de göstereceğim.
@@ -185,5 +185,42 @@ class FirestoreServices implements DbBase {
     });
 
     return true;
+  }
+
+  @override
+  Future<List<UserModel>> getUserWithPagination(
+      UserModel? enSoongetirilenUser, int getirilecekElemanSayisi) async {
+    QuerySnapshot _querySnapshot;
+    List<UserModel> _allUserList = [];
+    if (enSoongetirilenUser == null) {
+      // ilk gelecek on eleman için
+      print("ilk defa kullanıcılar getirliliyor");
+      _querySnapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .orderBy("userName")
+          .limit(getirilecekElemanSayisi)
+          .get();
+    } else {
+      // ilk gelen 10 elemandan sonraki elemanlar için. enson gelen isimden sonra  yeni elemanlar gelecekk,
+      print("SOonraki kullanıcılar getirliliyor");
+      _querySnapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .orderBy("userName")
+          .startAfter([enSoongetirilenUser.userName])
+          .limit(getirilecekElemanSayisi)
+          .get();
+      await Future.delayed(
+        Duration(seconds: 1),
+      );
+    }
+    for (DocumentSnapshot snap in _querySnapshot.docs) {
+      var data = snap.data();
+      if (data is Map<String, dynamic>) {
+        UserModel _tekUser = UserModel.fromMap(data);
+        _allUserList!.add(_tekUser);
+        print("getirilien user name " + _tekUser.userName!);
+      }
+    }
+    return _allUserList;
   }
 }

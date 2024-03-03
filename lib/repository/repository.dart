@@ -115,7 +115,7 @@ class Repository implements AuthBase {
       return profilPhotoUrl;
     }
   }
-
+/* 
   Future<List<UserModel>> getAllUser() async {
     if (appMode == AppMode.DEBUG) {
       return [];
@@ -123,7 +123,7 @@ class Repository implements AuthBase {
       tumKullanicilarListesi = await fireStoreService.getAllUser();
       return tumKullanicilarListesi;
     }
-  }
+  } */
 
   Stream<List<MesajModel>> getMessagers(
       String currentUserId, String sohbetEdilenUserId) {
@@ -178,5 +178,15 @@ class Repository implements AuthBase {
       }
     }
     return null;
+  }
+
+  Future<List<UserModel>> getUserWithPagination(
+      UserModel? ensonGetirilenUser, int getirilecekElemanSayisi) async {
+    if (appMode == AppMode.DEBUG) {
+      return [];
+    } else {
+      return await fireStoreService.getUserWithPagination(
+          ensonGetirilenUser, getirilecekElemanSayisi);
+    }
   }
 }
