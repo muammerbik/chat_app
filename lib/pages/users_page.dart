@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/konusma_page.dart';
+import 'package:flutter_firebase_crashlytics_usage/viewmodel/all_user_viewmodel.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +15,7 @@ class UsersPage extends StatefulWidget {
 }
 
 class _UsersPageState extends State<UsersPage> {
-  List<UserModel>? _allUserList = null;
+  // List<UserModel>? _allUserList = null;
   bool _isLoading = false; //intarnetten veri geliyormuyu kontrol etsin.
   bool _hasMore = true; // daha fazla veri akışı olacak mı?
   int _getirilecekElemanSayisi = 12;
@@ -22,29 +24,17 @@ class _UsersPageState extends State<UsersPage> {
   @override
   void initState() {
     //scrollController ın veriler geldikçe başta mı sonda mı olduğunu öğrendiğim yer.
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+    /*   SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       //daha context olusmadan verilerimi almaya çalıstığım için veriler gelmiyordu. çünkü build işlemii daha bitmeden verileri çağırdığım için. init state içindeki yapı context olustuktan hemen sonra verilerimi getiriyor.
-      getUser();
-    });
+    
+    }); */
     super.initState();
-    getUser();
+
     //minScrollExtent listenin en sonuna geldiğimizde oluşur.
     //maxSrollExtent listenin en üstüne geldiğimizde oluşur.
     scrollController.addListener(
       () {
-        if (scrollController.offset >=
-                scrollController.position.minScrollExtent &&
-            !scrollController.position.outOfRange) {
-          getUser();
-        }
-        /*   if (scrollController.position.atEdge) {
-        if (scrollController.position == 0) {
-          print("BAŞDAYIZ");
-        } else {
-          getUser();
-          print("SONDAYIZ");
-        }
-      } */
+        listeScrollListener();
       },
     );
   }
@@ -55,14 +45,48 @@ class _UsersPageState extends State<UsersPage> {
       appBar: AppBar(
         title: Text("KULLANICILAR SAYAFASI"),
       ),
-      body: _allUserList == null
+      body: Consumer<AllUserViewModel>(
+        builder: (context, model, child) {
+          if (model.state == AllUserViewState.Busy) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (model.state == AllUserViewState.Loaded) {
+            return RefreshIndicator(
+              onRefresh: () => model.refreshIndicator(),
+              child: ListView.builder(
+                controller: scrollController,
+                itemCount: model.hasMoreLoading
+                    ? model.tumKullanicilerListesi.length + 1
+                    : model.tumKullanicilerListesi.length,
+                itemBuilder: (context, index) {
+                  if (model.tumKullanicilerListesi == 1) {
+                    return kulliciYokUI();
+                  }
+                 else if (model.hasMoreLoading &&
+                      index == model.tumKullanicilerListesi.length) {
+                    return yeniElemanlarYukleniyorIndicator();
+                  } else {
+                    return userListesiElemanlariOlustur(index);
+                  }
+                },
+              ),
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
+
+      /*  _allUserList == null
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : kullaniciListesiniOlustur(),
+          : kullaniciListesiniOlustur(), */
     );
   }
 
+/* 
   getUser() async {
     //       PAGİNATİON KULLANIMIDIR    .FİREBASE'DEN  KULLANICILARIN HEPSİNİ  BİRDEN GETİRMEK YERİNE BELLİ BİR KURALARA GÖRE GETİRMEMİZİ SAĞLIYOR.
 
@@ -103,8 +127,8 @@ class _UsersPageState extends State<UsersPage> {
       },
     );
   }
-
-  kullaniciListesiniOlustur() {
+ */
+  /* kullaniciListesiniOlustur() {
     if (_allUserList!.length > 1) {
       return RefreshIndicator(
         onRefresh: () {
@@ -117,33 +141,7 @@ class _UsersPageState extends State<UsersPage> {
             if (index == _allUserList!.length) {
               return yeniElemanlarYukleniyorIndicator();
             }
-            UserViewmodel _userModel =
-                Provider.of<UserViewmodel>(context, listen: false);
-            var oankiUser = _allUserList![index];
-            if (oankiUser.userId == _userModel.userModel!.userId) {
-              return Container();
-            }
-
-            return GestureDetector(
-              onTap: () {
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(
-                    builder: (context) => KonusmaPage(
-                        currentUser: _userModel.userModel!,
-                        sohbetEdilenUser: oankiUser),
-                  ),
-                );
-              },
-              child: Card(
-                child: ListTile(
-                  title: Text(oankiUser.userName!),
-                  subtitle: Text(oankiUser.email),
-                  leading: CircleAvatar(
-                      backgroundColor: Colors.grey.withAlpha(20),
-                      backgroundImage: NetworkImage(oankiUser.profilUrl!)),
-                ),
-              ),
-            );
+            return userListesiElemanlariOlustur(index);
           },
         ),
       );
@@ -167,23 +165,92 @@ class _UsersPageState extends State<UsersPage> {
       );
     }
   }
+ */
 
-  yeniElemanlarYukleniyorIndicator() {
-    return Padding(
-      padding: EdgeInsets.all(8),
-      child: Center(
-        child: Opacity(
-          opacity: _isLoading ? 1 : 0,
-          child: _isLoading ? CircularProgressIndicator() : null,
+  Widget kulliciYokUI() {
+    AllUserViewModel tumKullanicilerViewmodel =
+        Provider.of<AllUserViewModel>(context, listen: false);
+    return RefreshIndicator(
+      onRefresh: () async {
+        return tumKullanicilerViewmodel.refreshIndicator();
+      },
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Container(
+          height: MediaQuery.of(context).size.height - 150,
+          child: Center(
+            child: Text(
+              "Kayıtlı kullanıcı bulunamadı!",
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
         ),
       ),
     );
   }
 
+  yeniElemanlarYukleniyorIndicator() {
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+/* 
   Future<Null> kullanicilarListesiReflesh() async {
     _hasMore = true;
     _ensonGetirilenUser = null;
-    getUser();
+ 
+  } */
+
+  userListesiElemanlariOlustur(index) {
+    UserViewmodel _userModel =
+        Provider.of<UserViewmodel>(context, listen: false);
+    AllUserViewModel tumKullanicilerViewmodel =
+        Provider.of<AllUserViewModel>(context, listen: false);
+    var oankiUser = tumKullanicilerViewmodel.tumKullanicilerListesi[index];
+    if (oankiUser.userId == _userModel.userModel!.userId) {
+      return Container();
+    }
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => KonusmaPage(
+                currentUser: _userModel.userModel!,
+                sohbetEdilenUser: oankiUser),
+          ),
+        );
+      },
+      child: Card(
+        child: ListTile(
+          title: Text(oankiUser.userName!),
+          subtitle: Text(oankiUser.email),
+          leading: CircleAvatar(
+              backgroundColor: Colors.grey.withAlpha(20),
+              backgroundImage: NetworkImage(oankiUser.profilUrl!)),
+        ),
+      ),
+    );
+  }
+
+  void dahaFazlaKullaniciGetir() async {
+    if (_isLoading == false) {
+      _isLoading == true;
+      final AllUserViewModel tumKullanicilerViewmodel =
+          Provider.of<AllUserViewModel>(context, listen: false);
+      await tumKullanicilerViewmodel.dahaFazlaGetir();
+      _isLoading == false;
+    }
+  }
+
+  void listeScrollListener() {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        !scrollController.position.outOfRange) {
+      dahaFazlaKullaniciGetir();
+    }
   }
 }
 

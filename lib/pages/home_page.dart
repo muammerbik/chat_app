@@ -9,6 +9,8 @@ import 'package:flutter_firebase_crashlytics_usage/pages/sohbet_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/users_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_base.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/firebase_auth_service.dart';
+import 'package:flutter_firebase_crashlytics_usage/viewmodel/all_user_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   final UserModel? user;
@@ -28,7 +30,10 @@ class _HomePageState extends State<HomePage> {
 
   Map<TabItem, Widget> allUsers() {
     return {
-      TabItem.Kullanicilar: UsersPage(),
+      TabItem.Kullanicilar: ChangeNotifierProvider(
+        create: (context) => AllUserViewModel(),
+        builder: (context, child) => UsersPage(),
+      ),
       TabItem.Profil: ProfilePage(),
       TabItem.Sohbet: SohbetPage(),
     };
