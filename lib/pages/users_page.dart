@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/konusma_page.dart';
-import 'package:flutter_firebase_crashlytics_usage/pages/sohbet_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -30,16 +28,25 @@ class _UsersPageState extends State<UsersPage> {
     });
     super.initState();
     getUser();
-    scrollController.addListener(() {
-      if (scrollController.position.atEdge) {
+    //minScrollExtent listenin en sonuna geldiğimizde oluşur.
+    //maxSrollExtent listenin en üstüne geldiğimizde oluşur.
+    scrollController.addListener(
+      () {
+        if (scrollController.offset >=
+                scrollController.position.minScrollExtent &&
+            !scrollController.position.outOfRange) {
+          getUser();
+        }
+        /*   if (scrollController.position.atEdge) {
         if (scrollController.position == 0) {
           print("BAŞDAYIZ");
         } else {
           getUser();
           print("SONDAYIZ");
         }
-      }
-    });
+      } */
+      },
+    );
   }
 
   @override

@@ -185,8 +185,12 @@ class Repository implements AuthBase {
     if (appMode == AppMode.DEBUG) {
       return [];
     } else {
-      return await fireStoreService.getUserWithPagination(
+      
+      List<UserModel> _userList = await fireStoreService.getUserWithPagination(
           ensonGetirilenUser, getirilecekElemanSayisi);
+      tumKullanicilarListesi.addAll(_userList);
+
+      return _userList;
     }
   }
 }
