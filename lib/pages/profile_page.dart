@@ -2,7 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_sing_in_button.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/platform_widgets/platform_responsive_alert_dialog.dart';
+import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
+import 'package:flutter_firebase_crashlytics_usage/google_ads.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -20,12 +23,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
+    locator.get<GoogleAds>().loadInterstitialAd();
+    locator.get<GoogleAds>().loadBannerAd();
+
     textEditingController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
+  
     textEditingController.dispose();
     super.dispose();
   }
@@ -43,6 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           TextButton(
             onPressed: () {
+             
               requestConfirmationExit(context);
             },
             child: Text("exit"),
@@ -120,8 +128,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTop: () {
                     updateUserName(context);
                     profilePhotoGuncelle(context);
+                    locator.get<GoogleAds>().showInterstitialAd();
                   },
-                  color: Colors.purple)
+                  color: Colors.purple),
+              if (locator.get<GoogleAds>().bannerAd != null)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: 320,
+                    height: 50,
+                    child: AdWidget(ad: locator.get<GoogleAds>().bannerAd!),
+                  ),
+                )
             ],
           ),
         ),

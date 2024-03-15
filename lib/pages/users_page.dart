@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
+import 'package:flutter_firebase_crashlytics_usage/google_ads.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/konusma_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/all_user_viewmodel.dart';
@@ -23,6 +25,7 @@ class _UsersPageState extends State<UsersPage> {
   ScrollController scrollController = ScrollController();
   @override
   void initState() {
+   
     //scrollController ın veriler geldikçe başta mı sonda mı olduğunu öğrendiğim yer.
     /*   SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       //daha context olusmadan verilerimi almaya çalıstığım için veriler gelmiyordu. çünkü build işlemii daha bitmeden verileri çağırdığım için. init state içindeki yapı context olustuktan hemen sonra verilerimi getiriyor.
@@ -62,8 +65,7 @@ class _UsersPageState extends State<UsersPage> {
                 itemBuilder: (context, index) {
                   if (model.tumKullanicilerListesi == 1) {
                     return kulliciYokUI();
-                  }
-                 else if (model.hasMoreLoading &&
+                  } else if (model.hasMoreLoading &&
                       index == model.tumKullanicilerListesi.length) {
                     return yeniElemanlarYukleniyorIndicator();
                   } else {

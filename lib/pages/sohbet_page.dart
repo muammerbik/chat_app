@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
+import 'package:flutter_firebase_crashlytics_usage/google_ads.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/konusma_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/konusma_page.dart';
@@ -13,6 +15,12 @@ class SohbetPage extends StatefulWidget {
 }
 
 class _SohbetPageState extends State<SohbetPage> {
+  @override
+  void initState() {
+       locator.get<GoogleAds>().loadRewardAd();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final _userModel = Provider.of<UserViewmodel>(context);

@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
+import 'package:flutter_firebase_crashlytics_usage/google_ads.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
@@ -24,6 +26,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
 
   @override
   void dispose() {
+    
     textEditingController.dispose();
     _scrollController.dispose();
     super.dispose();
