@@ -17,17 +17,24 @@ class SohbetPage extends StatefulWidget {
 class _SohbetPageState extends State<SohbetPage> {
   @override
   void initState() {
-       locator.get<GoogleAds>().loadRewardAd();
+    locator.get<GoogleAds>().loadRewardAd();
     // TODO: implement initState
     super.initState();
   }
+
+  @override
+  void dispose() {
+    locator.get<GoogleAds>().rewardedAd!.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _userModel = Provider.of<UserViewmodel>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Sohbetler"),
+        title: const Text("Chats"),
       ),
       body: FutureBuilder<List<KonusmaModel>>(
         future: _userModel.getAllConversations(_userModel.userModel!.userId),
@@ -61,15 +68,55 @@ class _SohbetPageState extends State<SohbetPage> {
                           ),
                         );
                       },
-                      child: ListTile(
-                        title: Text(oankiTalk.son_yollanan_mesaj),
-                        subtitle: Text(
-                          oankiTalk.konusulanUserName.toString(),
+                      child: Dismissible(
+                        direction: DismissDirection.startToEnd,
+                        background: Container(
+                          color: Colors.red.shade600,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Icon(
+                                Icons.delete,
+                                color: Colors.grey.shade300,
+                                size: 35,
+                              ),
+                              Text(
+                                "Delete",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.grey.shade300,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.grey.withAlpha(20),
-                          backgroundImage: NetworkImage(
-                            oankiTalk.konusulanUserProfilUrl.toString(),
+                        onDismissed: (direction) {},
+                        key: UniqueKey(),
+                        child: Card(
+                          child: Container(
+                            color: Colors.white,
+                            child: ListTile(
+                              title: Text(
+                                oankiTalk.konusulanUserName.toString(),
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
+                              subtitle: Text(
+                                formatMessage(
+                                    oankiTalk.son_yollanan_mesaj.toString()),
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              trailing: Text(
+                                oankiTalk.saat_farki.toString(),
+                                style: TextStyle(fontSize: 15),
+                              ),
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.grey.withAlpha(20),
+                                backgroundImage: NetworkImage(
+                                  oankiTalk.konusulanUserProfilUrl.toString(),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -123,5 +170,13 @@ class _SohbetPageState extends State<SohbetPage> {
       },
     );
     return null;
+  }
+
+  String formatMessage(String message) {
+    if (message.length > 15) {
+      return '${message.substring(0, 15)}...';
+    } else {
+      return message;
+    }
   }
 }

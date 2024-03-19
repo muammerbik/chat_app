@@ -1,11 +1,4 @@
-  
-  
-  
-  
-  
-  
-  
-  /* // ignore_for_file: public_member_api_docs, sort_constructors_first
+/* // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class KonusmaModel {
@@ -75,6 +68,8 @@ class KonusmaModel {
   final Timestamp son_gorulme;
   String? konusulanUserName; // Bu alan artık isteğe bağlı
   String? konusulanUserProfilUrl; // Bu alan artık isteğe bağlı
+  DateTime? son_okuma_zamani;
+  String? saat_farki;
 
   KonusmaModel({
     required this.konusma_sahibi,
@@ -105,7 +100,8 @@ class KonusmaModel {
       konusma_sahibi: map['konusma_sahibi'] ?? '',
       kimle_konusuyor: map['kimle_konusuyor'] ?? '',
       goruldu: map['goruldu'] ?? false,
-      olusturulma_tarihi: (map['olusturulma_tarihi'] as Timestamp?) ?? Timestamp.now(),
+      olusturulma_tarihi:
+          (map['olusturulma_tarihi'] as Timestamp?) ?? Timestamp.now(),
       son_yollanan_mesaj: map['son_yollanan_mesaj'] ?? '',
       son_gorulme: (map['son_gorulme'] as Timestamp?) ?? Timestamp.now(),
       konusulanUserName: map['konusulanUserName'],

@@ -9,6 +9,8 @@ import 'package:flutter_firebase_crashlytics_usage/service/auth_service/firebase
 import 'package:flutter_firebase_crashlytics_usage/service/storage_service/firebase_storage_service.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/firestore_service/firestore_service.dart';
 
+import 'package:timeago/timeago.dart' as timeago;
+
 enum AppMode { DEBUG, RELEASE }
 
 class Repository implements AuthBase {
@@ -146,6 +148,8 @@ class Repository implements AuthBase {
     if (appMode == AppMode.DEBUG) {
       return [];
     } else {
+      DateTime _zaman = await fireStoreService.showTime(userId);
+
       var konusmaListesi = await fireStoreService.getAllConversations(userId);
       //konusmaModel sınıfımda kullanıcının username ve profilUrl değerini tutmadığım için, bu değerleri userModel sınıfından alıp kullanmaya çalışaçağım.bu nedenle yukarıda her yerden erişebileceğim tumKullanicilarListesi  listesini olusturdum.daha sonra userModeldeki bu verileri konusmaModele atayarak verileri istediğim verilere erişim sağladım.aşagıda  intarnete çıkmadan ve çıkarak ortamın durumuna göre verilere erişim sağlanıyor.
 //
@@ -165,9 +169,16 @@ class Repository implements AuthBase {
           oankiKonusma.konusulanUserProfilUrl =
               veritabanindanOkunanUser.profilUrl;
         }
+        timeAgoHesapla(oankiKonusma, _zaman);
       }
       return konusmaListesi;
     }
+  }
+
+  void timeAgoHesapla(KonusmaModel oankiKonusma, DateTime zaman) {
+    oankiKonusma.son_okuma_zamani = zaman;
+    var _duration = zaman.difference(oankiKonusma.olusturulma_tarihi.toDate());
+    oankiKonusma.saat_farki = timeago.format(zaman.subtract(_duration));
   }
 
   UserModel? listedeUserBul(String userId) {
@@ -185,7 +196,6 @@ class Repository implements AuthBase {
     if (appMode == AppMode.DEBUG) {
       return [];
     } else {
-      
       List<UserModel> _userList = await fireStoreService.getUserWithPagination(
           ensonGetirilenUser, getirilecekElemanSayisi);
       tumKullanicilarListesi.addAll(_userList);

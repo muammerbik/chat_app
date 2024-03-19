@@ -223,4 +223,34 @@ class FirestoreServices implements DbBase {
     }
     return _allUserList;
   }
+
+/*   @override
+  Future<DateTime> showTime(String userId) async {
+    await firestore
+        .collection("server")
+        .doc(userId)
+        .set({"saat": FieldValue.serverTimestamp()});
+
+    var okunanMap = await firestore.collection("server").doc(userId).get();
+    Timestamp okunanTarih = okunanMap.data["saat"];
+    return okunanTarih.toDate();
+  } */
+
+  Future<DateTime> showTime(String userId) async {
+    await firestore
+        .collection("server")
+        .doc(userId)
+        .set({"saat": FieldValue.serverTimestamp()});
+
+    var okunanMap = await firestore.collection("server").doc(userId).get();
+    // Veriyi doğru şekilde okumak için .data() metodunu ve null kontrolünü ekledim.
+    Map<String, dynamic>? data = okunanMap.data();
+    if (data != null) {
+      // "saat" anahtarını kontrol et ve Timestamp olarak al.
+      Timestamp okunanTarih = data["saat"];
+      return okunanTarih.toDate();
+    } else {
+      throw Exception("Data not found"); // Veri bulunamadığında hata fırlat.
+    }
+  }
 }

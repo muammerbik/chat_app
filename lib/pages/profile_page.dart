@@ -32,7 +32,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void dispose() {
-  
+    locator.get<GoogleAds>().interstitialAd!.dispose();
+    locator.get<GoogleAds>().bannerAd!.dispose();
     textEditingController.dispose();
     super.dispose();
   }
@@ -46,11 +47,10 @@ class _ProfilePageState extends State<ProfilePage> {
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text("profile page"),
+        title: Text("Profile "),
         actions: [
           TextButton(
             onPressed: () {
-             
               requestConfirmationExit(context);
             },
             child: Text("exit"),
@@ -123,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               CustomSingInButton(
-                  text: "değişiklikleri kaydet",
+                  text: "Değişiklikleri kaydet",
                   textColor: Colors.white,
                   onTop: () {
                     updateUserName(context);
@@ -133,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: Colors.purple),
               if (locator.get<GoogleAds>().bannerAd != null)
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: SizedBox(
                     width: 320,
                     height: 50,

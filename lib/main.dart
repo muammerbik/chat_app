@@ -16,6 +16,7 @@ Future<void> main() async {
   );
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -23,18 +24,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => UserViewmodel(),
-      builder: (context, child) => 
-       MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: "Messaging App",
-          theme: ThemeData(
+      builder: (context, child) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "Messaging App",
+        theme: ThemeData(
             visualDensity: VisualDensity.adaptivePlatformDensity,
             appBarTheme: const AppBarTheme(color: Colors.white),
             useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)
-                .copyWith(background: Colors.white),
-          ),
-          home: const LandingPage(),),
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.white)),
+        home: const LandingPage(),
+      ),
     );
   }
 }
