@@ -13,12 +13,10 @@ class SohbetPage extends StatefulWidget {
   @override
   State<SohbetPage> createState() => _SohbetPageState();
 }
-
 class _SohbetPageState extends State<SohbetPage> {
   @override
   void initState() {
     locator.get<GoogleAds>().loadRewardAd();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -148,18 +146,6 @@ class _SohbetPageState extends State<SohbetPage> {
       ),
     );
   }
-/* 
-  Future<void> konusmalariGetir() async {
-    final _userModel = Provider.of<UserViewmodel>(context);
-    var konusmalarigetir = await FirebaseFirestore.instance
-        .collection("konusmalar")
-        .where("konusma_sahibi", isEqualTo: _userModel.userModel!.userId)
-        .orderBy("olusturulma_tarihi", descending: true)
-        .get();
-    for (var konusma in konusmalarigetir.docs) {
-      print("konusma" + konusma.data().toString());
-    }
-  } */
 
   Future<Null> refleshChat() async {
     setState(

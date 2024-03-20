@@ -126,9 +126,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   text: "Değişiklikleri kaydet",
                   textColor: Colors.white,
                   onTop: () {
+                    locator.get<GoogleAds>().showInterstitialAd();
                     updateUserName(context);
                     profilePhotoGuncelle(context);
-                    locator.get<GoogleAds>().showInterstitialAd();
                   },
                   color: Colors.purple),
               if (locator.get<GoogleAds>().bannerAd != null)
@@ -165,17 +165,17 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  void updateUserName(BuildContext context) {
+  void updateUserName(BuildContext context) async {
     UserViewmodel _userModel =
         Provider.of<UserViewmodel>(context, listen: false);
     if (_userModel.userModel!.userName != textEditingController.text) {
-      var updateResult = _userModel.updateUserName(
+      var updateResult = await _userModel.updateUserName(
           _userModel.userModel!.userId, textEditingController.text);
 
-      if (updateResult == true) {
+      if (updateResult) {
         PlatformResponsiveAlertDialog(
           title: "Başarılı işlem",
-          contents: "UserName değişikliği gerçekleşti",
+          contents: "Değişiklikler kaydedildi",
           okButonText: "Tamam",
         ).showAllDialog(context);
       } else {

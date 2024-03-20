@@ -32,10 +32,10 @@ class _HomePageState extends State<HomePage> {
     return {
       TabItem.Kullanicilar: ChangeNotifierProvider(
         create: (context) => AllUserViewModel(),
-        builder: (context, child) => UsersPage(),
+        builder: (context, child) => const UsersPage(),
       ),
-      TabItem.Profil: ProfilePage(),
-      TabItem.Sohbet: SohbetPage(),
+      TabItem.Profil: const ProfilePage(),
+      TabItem.Sohbet: const SohbetPage(),
     };
   }
 

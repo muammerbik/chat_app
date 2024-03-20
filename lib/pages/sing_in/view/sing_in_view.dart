@@ -15,7 +15,7 @@ class SingInScreenView extends StatelessWidget {
     var userCredential = await userViewmodel.singInAnonymously();
   }
 
-  void signInWithGoogle(BuildContext context) async {
+  Future<void> signInWithGoogle(BuildContext context) async {
     final userViewmodel = Provider.of<UserViewmodel>(context, listen: false);
     var userCredential = await userViewmodel.googleWithSingIn();
   }
@@ -60,9 +60,7 @@ class SingInScreenView extends StatelessWidget {
           CustomSingInButton(
             textColor: Colors.white,
             text: "Facebook Sing-in",
-            onTop: () {
-              
-            },
+            onTop: () {},
             color: Color(0xff3b5997),
             iconWidget: Image.asset(
               "assets/images/facebook.png",

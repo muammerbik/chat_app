@@ -41,22 +41,21 @@ class UserModel {
     );
   }
 
-   UserModel.withIdAndProfileUrl({
+  UserModel.withIdAndProfileUrl({
     required this.userId,
     String? profilUrl,
-  }) : email = '',
-       userName = null,
-       profilUrl = profilUrl,
-       createdAt = null,
-       updatedAt = null,
-       seviye = 1;
+  })  : email = '',
+        userName = null,
+        profilUrl = profilUrl,
+        createdAt = null,
+        updatedAt = null,
+        seviye = 1;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'userId': userId,
       'email': email,
-      'userName':
-          userName ?? email.substring(0, email.indexOf("@")) + randomSayi(),
+      'userName': userName ?? email.substring(0, email.indexOf("@"),) + randomSayi(),
       'profilUrl': profilUrl ??
           "https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png",
       'createdAt':
@@ -71,8 +70,8 @@ class UserModel {
     return UserModel(
       userId: map['userId'] as String,
       email: map['email'] as String,
-      userName: map['userName'] as String?,
-      profilUrl: map['profilUrl'] as String?,
+      userName: map['userName'] as String,
+      profilUrl: map['profilUrl'] as String,
       createdAt: map['createdAt'] != null
           ? (map['createdAt'] as Timestamp).toDate()
           : null,

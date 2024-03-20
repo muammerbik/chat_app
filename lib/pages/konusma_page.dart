@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class KonusmaPage extends StatefulWidget {
@@ -33,9 +35,26 @@ class _KonusmaPageState extends State<KonusmaPage> {
     UserViewmodel _userModel = Provider.of<UserViewmodel>(context);
     UserModel _currentUser = widget.currentUser;
     UserModel _sohbetEdilenUser = widget.sohbetEdilenUser;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Sohbet"),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              backgroundImage:
+                  NetworkImage(widget.sohbetEdilenUser.profilUrl! ?? ""),
+              backgroundColor: Colors.transparent,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Text(
+                widget.sohbetEdilenUser.userName ?? 'Bilinmeyen Kullanıcı',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ],
+        ),
       ),
       body: Center(
         child: Column(
@@ -65,12 +84,11 @@ class _KonusmaPageState extends State<KonusmaPage> {
               ),
             ),
             Container(
-              padding: const EdgeInsets.only(bottom: 8, left: 8),
+              padding: const EdgeInsets.only(bottom: 18, left: 8),
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
-                      
                       autofocus: true,
                       controller: textEditingController,
                       cursorColor: Colors.blue,
@@ -81,7 +99,8 @@ class _KonusmaPageState extends State<KonusmaPage> {
                         hintText: "Mesaj girin!",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none),
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 2)),
                       ),
                     ),
                   ),
@@ -89,7 +108,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     child: FloatingActionButton(
                       elevation: 0,
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Colors.blue.shade700,
                       child: const Icon(
                         Icons.navigation,
                         size: 35,
@@ -131,6 +150,14 @@ class _KonusmaPageState extends State<KonusmaPage> {
     Color messageField = Colors.indigo;
     var fromMe = oankiMesaj.bendenMi;
 
+    var timeAndMinuteValue = "";
+    try {
+      timeAndMinuteValue =
+          showTimeAndMinute(oankiMesaj.date ?? Timestamp(1, 1));
+    } catch (e) {
+      print("mesaj gönderimde zaman hatası var " + e.toString());
+    }
+
     if (fromMe) {
       return Padding(
         padding: const EdgeInsets.all(8.0),
@@ -155,7 +182,10 @@ class _KonusmaPageState extends State<KonusmaPage> {
                     ),
                   ),
                 ),
-                Text("12.45"),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Text(timeAndMinuteValue),
+                ),
               ],
             ),
           ],
@@ -163,7 +193,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
       );
     } else {
       return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -175,7 +205,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
                       NetworkImage(widget.sohbetEdilenUser.profilUrl!),
                 ),
                 SizedBox(
-                  width: 2,
+                  width: 5,
                 ),
                 Flexible(
                   child: Container(
@@ -192,12 +222,21 @@ class _KonusmaPageState extends State<KonusmaPage> {
                     ),
                   ),
                 ),
-                Text("11.20"),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Text(timeAndMinuteValue),
+                ),
               ],
             ),
           ],
         ),
       );
     }
+  }
+
+  String showTimeAndMinute(Timestamp? date) {
+    var _formatter = DateFormat.Hm();
+    var formatlanmisTarih = _formatter.format(date!.toDate());
+    return formatlanmisTarih;
   }
 }

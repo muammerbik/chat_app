@@ -6,7 +6,9 @@ import 'package:flutter_firebase_crashlytics_usage/repository/repository.dart';
 enum AllUserViewState { Idle, Loaded, Busy }
 
 class AllUserViewModel with ChangeNotifier {
+
   Repository repository = locator<Repository>();
+  
   AllUserViewState _state = AllUserViewState.Idle;
 
   AllUserViewState get state => _state;
@@ -19,16 +21,21 @@ class AllUserViewModel with ChangeNotifier {
   }
 
   List<UserModel> _allPersonList = [];
+
   List<UserModel> get tumKullanicilerListesi => _allPersonList;
+
   bool _hasMore = true;
+
   UserModel? _ensonGetirilenUser;
-  static final sayfaBasinaGonderi = 9;
+
+  static final sayfaBasinaGonderi = 10;
 
   AllUserViewModel() {
     _allPersonList = [];
     _ensonGetirilenUser = null;
     getUserWithPagination(_ensonGetirilenUser, false);
   }
+
   getUserWithPagination(
       UserModel? ensonGetirilenUser, bool yeniElemanGetiriliyor) async {
     if (_allPersonList.isNotEmpty) {
@@ -55,9 +62,8 @@ class AllUserViewModel with ChangeNotifier {
       // Yeni eklenecek bir şey yoksa, daha fazla veri kalmadığını varsayabiliriz.
       _hasMore = false;
     }
-   
+
     state = AllUserViewState.Loaded;
-    
   }
 
   Future<void> dahaFazlaGetir() async {

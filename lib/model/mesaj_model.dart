@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class MesajModel {
   final String kimden;
   final String kime;
-  final DateTime? date;
+  final Timestamp? date;
   final bool bendenMi;
   final String mesaj;
 
@@ -17,21 +17,7 @@ class MesajModel {
     required this.mesaj,
   });
 
-  MesajModel copyWith({
-    String? kimden,
-    String? kime,
-    DateTime? date,
-    bool? bendenMi,
-    String? mesaj,
-  }) {
-    return MesajModel(
-      kimden: kimden ?? this.kimden,
-      kime: kime ?? this.kime,
-      date: date ?? this.date,
-      bendenMi: bendenMi ?? this.bendenMi,
-      mesaj: mesaj ?? this.mesaj,
-    );
-  }
+ 
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -47,7 +33,7 @@ class MesajModel {
     return MesajModel(
       kimden: map['kimden'] as String,
       kime: map['kime'] as String,
-      date: map['date'] != null ? (map['date'] as Timestamp).toDate() : null,
+      date: map['date'] ,
       bendenMi: map['bendenMi'] as bool,
       mesaj: map['mesaj'] as String,
     );

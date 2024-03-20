@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_sing_in_button.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/platform_widgets/platform_responsive_alert_dialog.dart';
 import 'package:flutter_firebase_crashlytics_usage/errors.dart';
@@ -8,7 +7,7 @@ import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-enum UserType { Register, login }
+enum UserType { register, login }
 
 class EmailAndPassworWithSingIn extends StatefulWidget {
   const EmailAndPassworWithSingIn({super.key});
@@ -24,25 +23,28 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
   String butonText = "";
   String linkText = "";
 
-  var myUserType = UserType.Register;
+  var myUserType = UserType.register;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    butonText = myUserType == UserType.login ? "Giriş yap" : " kayıt ol";
+    butonText = myUserType == UserType.login ? "Giriş yap" : " Kayıt ol";
     linkText = myUserType == UserType.login ? "Kayıt ol" : "Giriş yap ";
 
     final userViewmodel = Provider.of<UserViewmodel>(context);
 
     if (userViewmodel.userModel != null) {
-      Future.delayed(Duration(microseconds: 10), () {
-        Navigator.of(context).pop();
-      });
+      Future.delayed(
+        Duration(microseconds: 10),
+        () {
+          Navigator.of(context).pop();
+        },
+      );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Email ve şifre ile gireiş!"),
+        title: Text("Email ve şifre ile giriş!"),
       ),
       body: userViewmodel.state == ViewState.idly
           ? SingleChildScrollView(
@@ -84,10 +86,11 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
                       CustomSingInButton(
                         color: Colors.purple,
                         text: butonText,
+                        iconWidget: SizedBox(width: 95),
                         onTop: () {
                           onSubmitSingIn();
                         },
-                        textColor: Colors.black,
+                        textColor: Colors.white,
                       ),
                       SizedBox(height: 30),
                       TextButton(
@@ -110,7 +113,6 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
   void onSubmitSingIn() async {
     formKey.currentState!.save();
     final usermodel = Provider.of<UserViewmodel>(context, listen: false);
-
     if (myUserType == UserType.login) {
       try {
         UserModel? loginUser =
@@ -152,7 +154,7 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
     setState(
       () {
         myUserType =
-            myUserType == UserType.login ? UserType.Register : UserType.login;
+            myUserType == UserType.login ? UserType.register : UserType.login;
       },
     );
   }

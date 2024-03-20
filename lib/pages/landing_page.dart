@@ -10,6 +10,7 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userViewmodel = Provider.of<UserViewmodel>(context);
+    
     if (userViewmodel.state == ViewState.idly) {
       if (userViewmodel.userModel == null) {
         return SingInScreenView();

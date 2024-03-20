@@ -28,10 +28,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: "Messaging App",
         theme: ThemeData(
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            appBarTheme: const AppBarTheme(color: Colors.white),
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.white)),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          appBarTheme: const AppBarTheme(color: Colors.white),
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+        ),
         home: const LandingPage(),
       ),
     );

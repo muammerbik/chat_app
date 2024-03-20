@@ -48,7 +48,7 @@ class FirestoreServices implements DbBase {
         .where("userName", isEqualTo: newUserName)
         .get();
 
-    if (users.docs.isNotEmpty) {
+    if (users.docs.length >=1) {
       return false;
     } else {
       await firestore
