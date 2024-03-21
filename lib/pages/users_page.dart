@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 class UsersPage extends StatefulWidget {
   const UsersPage({super.key});
-
   @override
   State<UsersPage> createState() => _UsersPageState();
 }
@@ -100,7 +99,6 @@ class _UsersPageState extends State<UsersPage> {
 
   userListesiElemanlariOlustur(index) {
     UserViewmodel _userModel = Provider.of<UserViewmodel>(context, listen: false);
-
     AllUserViewModel tumKullanicilerViewmodel = Provider.of<AllUserViewModel>(context, listen: false);
     
     var oankiUser = tumKullanicilerViewmodel.tumKullanicilerListesi[index];

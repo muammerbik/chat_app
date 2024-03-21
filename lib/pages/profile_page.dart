@@ -8,14 +8,12 @@ import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
-
 class _ProfilePageState extends State<ProfilePage> {
   TextEditingController textEditingController = TextEditingController();
   File? profilePhoto;
@@ -42,9 +40,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     UserViewmodel _userModel = Provider.of<UserViewmodel>(context);
     textEditingController.text = _userModel.userModel!.userName!;
-    print(
-      "profil sayfasındaki user değerleri" + _userModel.userModel.toString(),
-    );
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile "),

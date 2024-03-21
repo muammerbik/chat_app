@@ -18,7 +18,7 @@ class Repository implements AuthBase {
   FakeAuthService fakeAuthService = locator<FakeAuthService>();
   FirestoreServices fireStoreService = locator<FirestoreServices>();
   FirebaseStorageService firebaseStorage = locator<FirebaseStorageService>();
-
+ 
   AppMode appMode = AppMode.RELEASE;
 
   List<UserModel> tumKullanicilarListesi = [];
@@ -50,7 +50,7 @@ class Repository implements AuthBase {
       return await firebaseAuthService.singOut();
     }
   }
-
+  
   @override
   Future<UserModel?> googleWithSingIn() async {
     if (appMode == AppMode.DEBUG) {
@@ -106,8 +106,7 @@ class Repository implements AuthBase {
     }
   }
 
-  Future<String> uploadFile(
-      String userId, String fileType, File? profilePhoto) async {
+  Future<String> uploadFile(String userId, String fileType, File? profilePhoto) async {
     if (appMode == AppMode.DEBUG) {
       return "dosya indirme linki";
     } else {
@@ -117,18 +116,8 @@ class Repository implements AuthBase {
       return profilPhotoUrl;
     }
   }
-/* 
-  Future<List<UserModel>> getAllUser() async {
-    if (appMode == AppMode.DEBUG) {
-      return [];
-    } else {
-      tumKullanicilarListesi = await fireStoreService.getAllUser();
-      return tumKullanicilarListesi;
-    }
-  } */
 
-  Stream<List<MesajModel>> getMessagers(
-      String currentUserId, String sohbetEdilenUserId) {
+  Stream<List<MesajModel>> getMessagers(String currentUserId, String sohbetEdilenUserId) {
     if (appMode == AppMode.DEBUG) {
       return Stream.empty();
     } else {
@@ -149,7 +138,6 @@ class Repository implements AuthBase {
       return [];
     } else {
       DateTime _zaman = await fireStoreService.showTime(userId);
-
       var konusmaListesi = await fireStoreService.getAllConversations(userId);
       //konusmaModel sınıfımda kullanıcının username ve profilUrl değerini tutmadığım için, bu değerleri userModel sınıfından alıp kullanmaya çalışaçağım.bu nedenle yukarıda her yerden erişebileceğim tumKullanicilarListesi  listesini olusturdum.daha sonra userModeldeki bu verileri konusmaModele atayarak verileri istediğim verilere erişim sağladım.aşagıda  intarnete çıkmadan ve çıkarak ortamın durumuna göre verilere erişim sağlanıyor.
 //
@@ -191,15 +179,12 @@ class Repository implements AuthBase {
     return null;
   }
 
-  Future<List<UserModel>> getUserWithPagination(
-      UserModel? ensonGetirilenUser, int getirilecekElemanSayisi) async {
+  Future<List<UserModel>> getUserWithPagination(UserModel? ensonGetirilenUser, int getirilecekElemanSayisi) async {
     if (appMode == AppMode.DEBUG) {
       return [];
     } else {
-      List<UserModel> _userList = await fireStoreService.getUserWithPagination(
-          ensonGetirilenUser, getirilecekElemanSayisi);
+      List<UserModel> _userList = await fireStoreService.getUserWithPagination(ensonGetirilenUser, getirilecekElemanSayisi);
       tumKullanicilarListesi.addAll(_userList);
-
       return _userList;
     }
   }

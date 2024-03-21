@@ -30,9 +30,7 @@ class FirebaseAuthService implements AuthBase {
       var userCredential = await firebaseAuth.signInAnonymously();
       return _userFromFirebase(userCredential.user!);
     } catch (e) {
-      debugPrint(
-        "singInAnonymously hattaaa" + e.toString(),
-      );
+      debugPrint("singInAnonymously hattaaa" + e.toString());
       return null;
     }
   }
@@ -40,15 +38,13 @@ class FirebaseAuthService implements AuthBase {
   @override
   Future<bool> singOut() async {
     try {
-      //firebaseden de çıkıs yapmak için yazdım!
       final googleSignIn = GoogleSignIn();
       googleSignIn.signOut();
+      //firebaseden de çıkıs yapmak için yazdım!
       await firebaseAuth.signOut();
       return true;
     } catch (e) {
-      debugPrint(
-        "hataaa signOut" + e.toString(),
-      );
+      debugPrint("hataaa signOut" + e.toString());
     }
     return false;
   }
@@ -57,17 +53,12 @@ class FirebaseAuthService implements AuthBase {
   Future<UserModel?> googleWithSingIn() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
     GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-
     if (googleUser != null) {
       GoogleSignInAuthentication googleAutUser =
           await googleUser.authentication;
-
       if (googleAutUser.idToken != null && googleAutUser.accessToken != null) {
         var userCredential = await firebaseAuth.signInWithCredential(
-          GoogleAuthProvider.credential(
-              accessToken: googleAutUser.accessToken,
-              idToken: googleAutUser.idToken),
-        );
+          GoogleAuthProvider.credential(accessToken: googleAutUser.accessToken, idToken: googleAutUser.idToken),);
         User? _user = userCredential.user;
         return _userFromFirebase(_user!);
       } else {
@@ -80,16 +71,13 @@ class FirebaseAuthService implements AuthBase {
 
   @override
   Future<UserModel?> createUserWithSingIn(String email, String password) async {
-    var userCredential = await firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
+    var userCredential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     return _userFromFirebase(userCredential.user!);
   }
 
   @override
-  Future<UserModel?> emailAndPasswordWithSingIn(
-      String email, String password) async {
-    var userCredential = await firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+  Future<UserModel?> emailAndPasswordWithSingIn(String email, String password) async {
+    var userCredential = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     return _userFromFirebase(userCredential.user!);
   }
 }

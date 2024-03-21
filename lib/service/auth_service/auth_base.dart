@@ -1,5 +1,4 @@
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
-
 abstract class AuthBase {
   Future<UserModel?> currentUser();
   Future<UserModel?> singInAnonymously();

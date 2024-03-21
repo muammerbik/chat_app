@@ -24,7 +24,7 @@ class SingInScreenView extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
-        builder: (context) => EmailAndPassworWithSingIn(),
+        builder: (context) => const EmailAndPassworWithSingIn(),
       ),
     );
   }

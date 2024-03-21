@@ -13,11 +13,8 @@ class FirebaseStorageService implements FireBaseStorageBase {
         .child(userId)
         .child(fileType)
         .child("profil_photo.png");
-
     UploadTask uploadTask = reference.putFile(yuklenecekDosya);
-
     TaskSnapshot taskSnapshot = await uploadTask;
-
     String downloadUrl = await taskSnapshot.ref.getDownloadURL();
     return downloadUrl;
   }

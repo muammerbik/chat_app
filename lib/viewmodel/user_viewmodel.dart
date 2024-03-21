@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/konusma_model.dart';
@@ -14,17 +13,11 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
   UserViewmodel() {
     currentUser();
   }
-
   Repository repository = locator<Repository>();
-
   ViewState _state = ViewState.busy;
-
   UserModel? _userModel;
-
   UserModel? get userModel => _userModel;
-
   ViewState get state => _state;
-
   set state(ViewState newState) {
     _state = newState;
     notifyListeners();
@@ -37,9 +30,7 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
       _userModel = await repository.currentUser();
       return _userModel;
     } catch (e) {
-      debugPrint(
-        "currentt user hatası viewmodel $e",
-      );
+      debugPrint("currentt user hatasi viewmodel $e",);
       return null;
     } finally {
       state = ViewState.idly;
@@ -53,9 +44,7 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
       _userModel = await repository.singInAnonymously();
       return _userModel;
     } catch (e) {
-      debugPrint(
-        "singInAnonymously hatası viewmodel$e",
-      );
+      debugPrint("singInAnonymously hatası viewmodel$e");
       return null;
     } finally {
       state = ViewState.idly;
@@ -70,9 +59,7 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
       _userModel = null;
       return sonuc;
     } catch (e) {
-      debugPrint(
-        "singOuthatası viewmodel$e",
-      );
+      debugPrint("singOuthatasi viewmodel$e",);
       return false;
     } finally {
       state = ViewState.idly;
@@ -86,9 +73,7 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
       _userModel = await repository.googleWithSingIn();
       return _userModel;
     } catch (e) {
-      debugPrint(
-        "singInAnonymously hatası viewmodel$e",
-      );
+      debugPrint("singInAnonymously hatası viewmodel$e");
       return null;
     } finally {
       state = ViewState.idly;
@@ -100,7 +85,6 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
     try {
       state = ViewState.busy;
       _userModel = await repository.createUserWithSingIn(email, password);
-
       return _userModel;
     } finally {
       state = ViewState.idly;
@@ -108,12 +92,10 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
   }
 
   @override
-  Future<UserModel?> emailAndPasswordWithSingIn(
-      String email, String password) async {
+  Future<UserModel?> emailAndPasswordWithSingIn(String email, String password)async {
     try {
       state = ViewState.busy;
       _userModel = await repository.emailAndPasswordWithSingIn(email, password);
-
       return _userModel;
     } finally {
       state = ViewState.idly;
@@ -134,11 +116,6 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
         await repository.uploadFile(userId, fileType, profilePhoto);
     return indirmeLink;
   }
-/* 
-  Future<List<UserModel>> getAllUser() async {
-    var tumKullanicilarListesi = await repository.getAllUser();
-    return tumKullanicilarListesi;
-  } */
 
   Stream<List<MesajModel>> getMessagers(
       String currentUserId, String sohbetEdilenUserId) {

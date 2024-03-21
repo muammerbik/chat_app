@@ -143,7 +143,7 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
             Errors.showError(e.code));
         PlatformResponsiveAlertDialog(
           title: "Oturum açma  hatası!",
-          contents: "Bu Email zaten kullanılıyor! farklı birşey deneyin!",
+          contents: "Bu Email zaten kullanılıyor! farklı  e mail deneyin!",
           okButonText: "Tamam",
         ).showAllDialog(context);
       }

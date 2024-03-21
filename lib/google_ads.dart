@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-
 class GoogleAds with ChangeNotifier {
   static const String banner1 = "ca-app-pub-3940256099942544/6300978111";
   static const String interstitial1 = "ca-app-pub-3940256099942544/1033173712";
   static const String rewardad1 = "ca-app-pub-3940256099942544/5224354917";
-
   static const String appId = "ca-app-pub-8080828811373662~8857348352";
   BannerAd? bannerAd;
   InterstitialAd? interstitialAd;
