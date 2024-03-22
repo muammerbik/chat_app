@@ -9,10 +9,10 @@ import 'package:provider/provider.dart';
 
 class SohbetPage extends StatefulWidget {
   const SohbetPage({super.key});
-
   @override
   State<SohbetPage> createState() => _SohbetPageState();
 }
+
 class _SohbetPageState extends State<SohbetPage> {
   @override
   void initState() {
@@ -29,7 +29,6 @@ class _SohbetPageState extends State<SohbetPage> {
   @override
   Widget build(BuildContext context) {
     final _userModel = Provider.of<UserViewmodel>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Chats"),

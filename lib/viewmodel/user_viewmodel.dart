@@ -8,7 +8,6 @@ import 'package:flutter_firebase_crashlytics_usage/repository/repository.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_base.dart';
 
 enum ViewState { idly, busy }
-
 class UserViewmodel with ChangeNotifier implements AuthBase {
   UserViewmodel() {
     currentUser();

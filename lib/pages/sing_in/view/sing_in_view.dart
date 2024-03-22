@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_sing_in_button.dart';
-import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/emailAndPassword_sing_in.dart';
-import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_base.dart';
-import 'package:flutter_firebase_crashlytics_usage/service/auth_service/firebase_auth_service.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class SingInScreenView extends StatelessWidget {
-  AuthBase firebaseAuthService = locator<FirebaseAuthService>();
 
   Future<void> singInGuest(BuildContext context) async {
     final userViewmodel = Provider.of<UserViewmodel>(context, listen: false);

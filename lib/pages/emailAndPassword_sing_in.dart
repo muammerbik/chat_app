@@ -16,7 +16,6 @@ class EmailAndPassworWithSingIn extends StatefulWidget {
   State<EmailAndPassworWithSingIn> createState() =>
       _EmailAndPassworWithSingInState();
 }
-
 class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
   String email = "";
   String password = "";
@@ -32,19 +31,17 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
     linkText = myUserType == UserType.login ? "Kayıt ol" : "Giriş yap ";
 
     final userViewmodel = Provider.of<UserViewmodel>(context);
-
     if (userViewmodel.userModel != null) {
       Future.delayed(
-        Duration(microseconds: 10),
+        const Duration(microseconds: 10),
         () {
           Navigator.of(context).pop();
         },
       );
     }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Email ve şifre ile giriş!"),
+        title: const Text("Email ve şifre ile giriş!"),
       ),
       body: userViewmodel.state == ViewState.idly
           ? SingleChildScrollView(
@@ -61,38 +58,38 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
                         autofocus: true,
                         initialValue: "mamercan@gmail.com",
                         keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "E mail",
                           labelText: "E mail girini!",
                           border: OutlineInputBorder(),
                           prefixIcon: Icon(Icons.email),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
                         onSaved: (newValue) {
                           password = newValue!;
                         },
                         obscureText: true,
                         initialValue: "123123112",
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "Şifre",
                           labelText: "Şifre girini!",
                           border: OutlineInputBorder(),
                           prefixIcon: Icon(Icons.key),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomSingInButton(
                         color: Colors.purple,
                         text: butonText,
-                        iconWidget: SizedBox(width: 95),
+                        iconWidget: const SizedBox(width: 95),
                         onTop: () {
                           onSubmitSingIn();
                         },
                         textColor: Colors.white,
                       ),
-                      SizedBox(height: 30),
+                      const SizedBox(height: 30),
                       TextButton(
                         onPressed: () {
                           degistirFunc();
@@ -104,7 +101,7 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
                 ),
               ),
             )
-          : Center(
+          : const Center(
               child: CircularProgressIndicator(),
             ),
     );
@@ -123,8 +120,8 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
           );
       } on FirebaseAuthException catch (e) {
         debugPrint(
-            "widget  oturum ama hata yakalandı " + Errors.showError(e.code));
-        PlatformResponsiveAlertDialog(
+            "widget  oturum açmada hata yakalandı " + Errors.showError(e.code));
+        const PlatformResponsiveAlertDialog(
           title: "Kullanıcı giriş hatası !",
           contents: "Bu kullanıcı db de mevcut değil",
           okButonText: "Tamam",
@@ -141,7 +138,7 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
       } on FirebaseAuthException catch (e) {
         debugPrint("widget kulllanici  oluşturma hata yakalandi" +
             Errors.showError(e.code));
-        PlatformResponsiveAlertDialog(
+        const PlatformResponsiveAlertDialog(
           title: "Oturum açma  hatası!",
           contents: "Bu Email zaten kullanılıyor! farklı  e mail deneyin!",
           okButonText: "Tamam",

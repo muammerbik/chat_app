@@ -59,7 +59,6 @@ class Repository implements AuthBase {
       UserModel? usermodel = await firebaseAuthService.googleWithSingIn();
       // google ile giriş yaptıktan sonra  verileri firebase firestore kaydettim. Ardından kaydedilen verileri okudum terminalde gösterdim.
       bool result = await fireStoreService.saveUser(usermodel!);
-
       if (result) {
         return await fireStoreService.readUser(usermodel.userId);
       } else {
@@ -78,7 +77,6 @@ class Repository implements AuthBase {
           await firebaseAuthService.createUserWithSingIn(email, password);
       bool result = await fireStoreService.saveUser(usermodel!);
       if (result) {
-        //veritabanına eklenen id değerlerini aldım
         return await fireStoreService.readUser(usermodel.userId);
       } else {
         return null;
@@ -139,23 +137,19 @@ class Repository implements AuthBase {
     } else {
       DateTime _zaman = await fireStoreService.showTime(userId);
       var konusmaListesi = await fireStoreService.getAllConversations(userId);
-      //konusmaModel sınıfımda kullanıcının username ve profilUrl değerini tutmadığım için, bu değerleri userModel sınıfından alıp kullanmaya çalışaçağım.bu nedenle yukarıda her yerden erişebileceğim tumKullanicilarListesi  listesini olusturdum.daha sonra userModeldeki bu verileri konusmaModele atayarak verileri istediğim verilere erişim sağladım.aşagıda  intarnete çıkmadan ve çıkarak ortamın durumuna göre verilere erişim sağlanıyor.
-//
+      //konusmaModel sınıfımda kullanıcının username ve profilUrl değerini tutmadığım için, bu değerleri userModel sınıfından alıp kullanmaya çalışaçağım.bu nedenle yukarıda her yerden erişebileceğim tumKullanicilarListesi  listesini olusturdum.daha sonra userModeldeki bu verileri konusmaModele atayarak verileri istediğim verilere erişim sağladım.aşagıda  intarnete çıkmadan ve çıkarak ortamın durumuna göre verilere erişim sağlanıyor.//
       for (var oankiKonusma in konusmaListesi) {
         var userListesindekiKullanici =
             listedeUserBul(oankiKonusma.kimle_konusuyor);
         if (userListesindekiKullanici != null) {
           print("VERİLER LOCAL CACHEDEN OKUNDU");
           oankiKonusma.konusulanUserName = userListesindekiKullanici.userName;
-          oankiKonusma.konusulanUserProfilUrl =
-              userListesindekiKullanici.profilUrl;
+          oankiKonusma.konusulanUserProfilUrl =userListesindekiKullanici.profilUrl;
         } else {
           print("VERİLER VERİTABANINDAN  OKUNDU");
-          var veritabanindanOkunanUser =
-              await fireStoreService.readUser(oankiKonusma.kimle_konusuyor);
+          var veritabanindanOkunanUser =await fireStoreService.readUser(oankiKonusma.kimle_konusuyor);
           oankiKonusma.konusulanUserName = veritabanindanOkunanUser.userName;
-          oankiKonusma.konusulanUserProfilUrl =
-              veritabanindanOkunanUser.profilUrl;
+          oankiKonusma.konusulanUserProfilUrl =veritabanindanOkunanUser.profilUrl;
         }
         timeAgoHesapla(oankiKonusma, _zaman);
       }

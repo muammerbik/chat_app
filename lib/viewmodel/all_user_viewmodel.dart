@@ -6,9 +6,8 @@ import 'package:flutter_firebase_crashlytics_usage/repository/repository.dart';
 enum AllUserViewState { Idle, Loaded, Busy }
 
 class AllUserViewModel with ChangeNotifier {
-
   Repository repository = locator<Repository>();
-  
+
   AllUserViewState _state = AllUserViewState.Idle;
 
   AllUserViewState get state => _state;
@@ -25,9 +24,7 @@ class AllUserViewModel with ChangeNotifier {
   List<UserModel> get tumKullanicilerListesi => _allPersonList;
 
   bool _hasMore = true;
-
   UserModel? _ensonGetirilenUser;
-
   static final sayfaBasinaGonderi = 10;
 
   AllUserViewModel() {
@@ -36,24 +33,19 @@ class AllUserViewModel with ChangeNotifier {
     getUserWithPagination(_ensonGetirilenUser, false);
   }
 
-  getUserWithPagination(
-      UserModel? ensonGetirilenUser, bool yeniElemanGetiriliyor) async {
+  getUserWithPagination( UserModel? ensonGetirilenUser, bool yeniElemanGetiriliyor) async {
     if (_allPersonList.isNotEmpty) {
       _ensonGetirilenUser = _allPersonList.last;
     }
-
     if (!yeniElemanGetiriliyor) {
       state = AllUserViewState.Busy;
     }
-    var yeniListe = await repository.getUserWithPagination(
-        _ensonGetirilenUser, sayfaBasinaGonderi);
-
+    var yeniListe = await repository.getUserWithPagination(_ensonGetirilenUser, sayfaBasinaGonderi);
     // Yeni gelen listeyi var olan listeye eklerken benzersizliği kontrol et
     var eklenecekListe = yeniListe
         .where((yeniUser) => !_allPersonList
-            .any((mevcutUser) => mevcutUser.userId == yeniUser.userId))
+            .any((mevcutUser) => mevcutUser.userId == yeniUser.userId),)
         .toList();
-
     if (eklenecekListe.isNotEmpty) {
       _allPersonList.addAll(eklenecekListe);
       // Eğer yeni listeyi başarıyla eklediysek ve bu liste beklediğimiz sayıda değilse, daha fazla veri kalmadı demektir.
@@ -62,7 +54,6 @@ class AllUserViewModel with ChangeNotifier {
       // Yeni eklenecek bir şey yoksa, daha fazla veri kalmadığını varsayabiliriz.
       _hasMore = false;
     }
-
     state = AllUserViewState.Loaded;
   }
 

@@ -9,7 +9,6 @@ class UsersPage extends StatefulWidget {
   @override
   State<UsersPage> createState() => _UsersPageState();
 }
-
 class _UsersPageState extends State<UsersPage> {
   bool _isLoading = false; //intarnetten veri geliyormuyu kontrol etsin.
   ScrollController scrollController = ScrollController();
@@ -68,7 +67,6 @@ class _UsersPageState extends State<UsersPage> {
 
   Widget kulliciYokUI() {
     AllUserViewModel tumKullanicilerViewmodel = Provider.of<AllUserViewModel>(context, listen: false);
-
     return RefreshIndicator(
       onRefresh: () async {
         return tumKullanicilerViewmodel.refreshIndicator();
@@ -105,7 +103,6 @@ class _UsersPageState extends State<UsersPage> {
     if (oankiUser.userId == _userModel.userModel!.userId) {
       return Container();
     }
-
     return GestureDetector(
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(
@@ -137,8 +134,7 @@ class _UsersPageState extends State<UsersPage> {
   void dahaFazlaKullaniciGetir() async {
     if (_isLoading == false) {
       _isLoading == true;
-      final AllUserViewModel tumKullanicilerViewmodel =
-          Provider.of<AllUserViewModel>(context, listen: false);
+      final AllUserViewModel tumKullanicilerViewmodel=Provider.of<AllUserViewModel>(context, listen: false);
       await tumKullanicilerViewmodel.dahaFazlaGetir();
       _isLoading == false;
     }

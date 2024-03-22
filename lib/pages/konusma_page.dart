@@ -98,9 +98,9 @@ class _KonusmaPageState extends State<KonusmaPage> {
                         filled: true,
                         hintText: "Mesaj girin!",
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.red, width: 2)),
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
                       ),
                     ),
                   ),

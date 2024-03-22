@@ -60,6 +60,7 @@ class FirestoreServices implements DbBase {
     }
     return conversationsList;
   }
+
   //Stream yapısı anlık olarak verileri dinlemek için kullanılır, İçerisinde mesajlar olan bir liste döndürdüm.Sohbetteki tüm mesajları almamı sağlayacak.
   @override
   Stream<List<MesajModel>> getMessages(String currentUserId, String sohbetEdilenUserId) {
@@ -71,6 +72,7 @@ class FirestoreServices implements DbBase {
   // Mesajlaşma iki kişi arsında olan birseydir.Mesaj gönderen ve mesaj alan kişiler vardır.ve ortada bir mesaj dökümanı olmalı.mesaj gönderen ve mesaj alan kişileri doc olarak iki kere karşılıklı kaydetmemiz gerek. Bunun sebebi kullanıcılardan biri mesajları sildiğinde silmeyen kişideki verilerin gidebileceğindendir
   // mesajı db ye kaydederken iki farklı yere kaydedip, farklı idler vermem gerekiyor.
   @override
+
   Future<bool> saveMessages(MesajModel kaydedilecekMesaj) async {
     var mesajId = firestore.collection("konusanlar").doc().id;
     //yazılan mesajı içinde barındıracak bir alt id olusturdum.
@@ -107,8 +109,7 @@ class FirestoreServices implements DbBase {
 
 
   @override
-  Future<List<UserModel>> getUserWithPagination(
-      UserModel? enSoongetirilenUser, int getirilecekElemanSayisi) async {
+  Future<List<UserModel>> getUserWithPagination(UserModel? enSoongetirilenUser, int getirilecekElemanSayisi) async {
     QuerySnapshot _querySnapshot;
     List<UserModel> _allUserList = [];
     if (enSoongetirilenUser == null) {
@@ -117,7 +118,7 @@ class FirestoreServices implements DbBase {
       _querySnapshot = await FirebaseFirestore.instance.collection("users").orderBy("userName").limit(getirilecekElemanSayisi).get();
     } else {
       // ilk gelen 10 elemandan sonraki elemanlar için. enson gelen isimden sonra  yeni elemanlar gelecekk,
-      print("SOonraki kullanıcılar getirliliyor");
+      print("Sonraki kullanıcılar getirliliyor");
       _querySnapshot = await FirebaseFirestore.instance
           .collection("users").orderBy("userName").startAfter([enSoongetirilenUser.userName]).limit(getirilecekElemanSayisi).get();
       await Future.delayed(Duration(seconds: 1),);

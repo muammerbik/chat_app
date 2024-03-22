@@ -14,6 +14,7 @@ class ProfilePage extends StatefulWidget {
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
+
 class _ProfilePageState extends State<ProfilePage> {
   TextEditingController textEditingController = TextEditingController();
   File? profilePhoto;
@@ -23,7 +24,6 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     locator.get<GoogleAds>().loadInterstitialAd();
     locator.get<GoogleAds>().loadBannerAd();
-
     textEditingController = TextEditingController();
     super.initState();
   }
@@ -118,7 +118,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               CustomSingInButton(
-                  text: "Değişiklikleri kaydet",
+                  text: "Kaydet",
+                  iconWidget: SizedBox(width: 117),
                   textColor: Colors.white,
                   onTop: () {
                     locator.get<GoogleAds>().showInterstitialAd();
@@ -161,8 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void updateUserName(BuildContext context) async {
-    UserViewmodel _userModel =
-        Provider.of<UserViewmodel>(context, listen: false);
+    UserViewmodel _userModel =Provider.of<UserViewmodel>(context, listen: false);
     if (_userModel.userModel!.userName != textEditingController.text) {
       var updateResult = await _userModel.updateUserName(
           _userModel.userModel!.userId, textEditingController.text);
