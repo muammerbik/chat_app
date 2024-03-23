@@ -12,5 +12,5 @@ abstract class DbBase {
   Future<bool> saveMessages(MesajModel kaydedilecekMesaj);
   Future<List<KonusmaModel>> getAllConversations(String userId);
   Future<DateTime> showTime(String userId);
- 
+  Future<bool> chatDelete(String currentUserId, String sohbetEdilenUserId);
 }

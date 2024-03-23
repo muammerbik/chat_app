@@ -8,6 +8,7 @@ import 'package:flutter_firebase_crashlytics_usage/repository/repository.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_base.dart';
 
 enum ViewState { idly, busy }
+
 class UserViewmodel with ChangeNotifier implements AuthBase {
   UserViewmodel() {
     currentUser();
@@ -29,7 +30,9 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
       _userModel = await repository.currentUser();
       return _userModel;
     } catch (e) {
-      debugPrint("currentt user hatasi viewmodel $e",);
+      debugPrint(
+        "currentt user hatasi viewmodel $e",
+      );
       return null;
     } finally {
       state = ViewState.idly;
@@ -58,7 +61,9 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
       _userModel = null;
       return sonuc;
     } catch (e) {
-      debugPrint("singOuthatasi viewmodel$e",);
+      debugPrint(
+        "singOuthatasi viewmodel$e",
+      );
       return false;
     } finally {
       state = ViewState.idly;
@@ -91,7 +96,8 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
   }
 
   @override
-  Future<UserModel?> emailAndPasswordWithSingIn(String email, String password)async {
+  Future<UserModel?> emailAndPasswordWithSingIn(
+      String email, String password) async {
     try {
       state = ViewState.busy;
       _userModel = await repository.emailAndPasswordWithSingIn(email, password);
@@ -133,5 +139,9 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
       UserModel? ensonGetirilenUser, int getirilecekElemanSayisi) async {
     return await repository.getUserWithPagination(
         ensonGetirilenUser, getirilecekElemanSayisi);
+  }
+
+  Future<bool> chatDelete(String currentUserId, String sohbetEdilenUserId) async {
+    return repository.chatDelete( currentUserId,  sohbetEdilenUserId);
   }
 }

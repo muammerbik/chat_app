@@ -131,7 +131,7 @@ class _UsersPageState extends State<UsersPage> {
             ),
             subtitle: Text(oankiUser.email),
             leading: CircleAvatar(
-                backgroundColor: white.withAlpha(20),
+                backgroundColor: grey.withAlpha(30),
                 backgroundImage: NetworkImage(oankiUser.profilUrl!)),
           ),
         ),

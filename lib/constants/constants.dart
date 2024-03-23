@@ -8,6 +8,7 @@ const black = Colors.black;
 const indigo = Colors.indigo;
 const red = Colors.red;
 const transparent = Colors.transparent;
+const grey = Colors.grey;
 //Text
 const appName = "Messaging App";
 const singIn = "Sing-in";

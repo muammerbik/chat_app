@@ -45,10 +45,9 @@ class _KonusmaPageState extends State<KonusmaPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             CircleAvatar(
-              backgroundImage:
-                  NetworkImage(widget.sohbetEdilenUser.profilUrl! ?? ""),
-              backgroundColor: Colors.transparent,
-            ),
+                backgroundImage:
+                    NetworkImage(widget.sohbetEdilenUser.profilUrl! ?? ""),
+                backgroundColor: grey.withAlpha(30)),
             Padding(
               padding: EdgeInsets.only(left: 8.w),
               child: Text(

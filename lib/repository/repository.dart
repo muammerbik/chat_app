@@ -18,7 +18,7 @@ class Repository implements AuthBase {
   FakeAuthService fakeAuthService = locator<FakeAuthService>();
   FirestoreServices fireStoreService = locator<FirestoreServices>();
   FirebaseStorageService firebaseStorage = locator<FirebaseStorageService>();
- 
+
   AppMode appMode = AppMode.RELEASE;
 
   List<UserModel> tumKullanicilarListesi = [];
@@ -50,7 +50,7 @@ class Repository implements AuthBase {
       return await firebaseAuthService.singOut();
     }
   }
-  
+
   @override
   Future<UserModel?> googleWithSingIn() async {
     if (appMode == AppMode.DEBUG) {
@@ -104,7 +104,8 @@ class Repository implements AuthBase {
     }
   }
 
-  Future<String> uploadFile(String userId, String fileType, File? profilePhoto) async {
+  Future<String> uploadFile(
+      String userId, String fileType, File? profilePhoto) async {
     if (appMode == AppMode.DEBUG) {
       return "dosya indirme linki";
     } else {
@@ -115,7 +116,8 @@ class Repository implements AuthBase {
     }
   }
 
-  Stream<List<MesajModel>> getMessagers(String currentUserId, String sohbetEdilenUserId) {
+  Stream<List<MesajModel>> getMessagers(
+      String currentUserId, String sohbetEdilenUserId) {
     if (appMode == AppMode.DEBUG) {
       return Stream.empty();
     } else {
@@ -144,12 +146,15 @@ class Repository implements AuthBase {
         if (userListesindekiKullanici != null) {
           print("VERİLER LOCAL CACHEDEN OKUNDU");
           oankiKonusma.konusulanUserName = userListesindekiKullanici.userName;
-          oankiKonusma.konusulanUserProfilUrl =userListesindekiKullanici.profilUrl;
+          oankiKonusma.konusulanUserProfilUrl =
+              userListesindekiKullanici.profilUrl;
         } else {
           print("VERİLER VERİTABANINDAN  OKUNDU");
-          var veritabanindanOkunanUser =await fireStoreService.readUser(oankiKonusma.kimle_konusuyor);
+          var veritabanindanOkunanUser =
+              await fireStoreService.readUser(oankiKonusma.kimle_konusuyor);
           oankiKonusma.konusulanUserName = veritabanindanOkunanUser.userName;
-          oankiKonusma.konusulanUserProfilUrl =veritabanindanOkunanUser.profilUrl;
+          oankiKonusma.konusulanUserProfilUrl =
+              veritabanindanOkunanUser.profilUrl;
         }
         timeAgoHesapla(oankiKonusma, _zaman);
       }
@@ -173,13 +178,23 @@ class Repository implements AuthBase {
     return null;
   }
 
-  Future<List<UserModel>> getUserWithPagination(UserModel? ensonGetirilenUser, int getirilecekElemanSayisi) async {
+  Future<List<UserModel>> getUserWithPagination(
+      UserModel? ensonGetirilenUser, int getirilecekElemanSayisi) async {
     if (appMode == AppMode.DEBUG) {
       return [];
     } else {
-      List<UserModel> _userList = await fireStoreService.getUserWithPagination(ensonGetirilenUser, getirilecekElemanSayisi);
+      List<UserModel> _userList = await fireStoreService.getUserWithPagination(
+          ensonGetirilenUser, getirilecekElemanSayisi);
       tumKullanicilarListesi.addAll(_userList);
       return _userList;
+    }
+  }
+
+  Future<bool> chatDelete(String currentUserId, String sohbetEdilenUserId) async {
+    if (appMode == AppMode.DEBUG) {
+      return false;
+    } else {
+     return  await fireStoreService.chatDelete( currentUserId, sohbetEdilenUserId);
     }
   }
 }

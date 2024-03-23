@@ -63,6 +63,7 @@ class _SohbetPageState extends State<SohbetPage> {
                             builder: (context) => KonusmaPage(
                               currentUser: _userModel.userModel!,
                               sohbetEdilenUser: UserModel.withIdAndProfileUrl(
+                                  userName: oankiTalk.konusulanUserName,
                                   userId: oankiTalk.kimle_konusuyor,
                                   profilUrl: oankiTalk.konusulanUserProfilUrl),
                             ),
@@ -91,7 +92,19 @@ class _SohbetPageState extends State<SohbetPage> {
                             ],
                           ),
                         ),
-                        onDismissed: (direction) {},
+                        onDismissed: (direction) async {
+                          bool sonuc = await _userModel.chatDelete(
+                              _userModel.userModel!.userId,
+                              oankiTalk.kimle_konusuyor);
+                          if (sonuc) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text("Sohbet başarıyla silindi")));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content:
+                                    Text("Sohbet silinirken bir hata oluştu")));
+                          }
+                        },
                         key: UniqueKey(),
                         child: Card(
                           child: Container(
@@ -113,7 +126,7 @@ class _SohbetPageState extends State<SohbetPage> {
                                 style: TextStyle(fontSize: 16.sp),
                               ),
                               leading: CircleAvatar(
-                                backgroundColor: white.withAlpha(20),
+                                backgroundColor: grey.withAlpha(30),
                                 backgroundImage: NetworkImage(
                                   oankiTalk.konusulanUserProfilUrl.toString(),
                                 ),

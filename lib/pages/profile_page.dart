@@ -96,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                   child: CircleAvatar(
                     radius: 80.r,
-                    backgroundColor: indigo,
+                    backgroundColor: Colors.grey.shade200,
                     backgroundImage: profilePhoto == null
                         ? NetworkImage(_userModel.userModel!.profilUrl!)
                         : FileImage(profilePhoto!) as ImageProvider,

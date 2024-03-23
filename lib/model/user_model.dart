@@ -44,8 +44,9 @@ class UserModel {
   UserModel.withIdAndProfileUrl({
     required this.userId,
     String? profilUrl,
+    String? userName,
   })  : email = '',
-        userName = null,
+        userName = userName,
         profilUrl = profilUrl,
         createdAt = null,
         updatedAt = null,
@@ -57,7 +58,7 @@ class UserModel {
       'email': email,
       'userName': userName ?? email.substring(0, email.indexOf("@"),) + randomSayi(),
       'profilUrl': profilUrl ??
-          "https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png",
+          "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
       'createdAt':
           createdAt?.millisecondsSinceEpoch ?? FieldValue.serverTimestamp(),
       'updatedAt':
