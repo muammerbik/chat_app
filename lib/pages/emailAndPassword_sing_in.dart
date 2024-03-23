@@ -2,9 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_sing_in_button.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/platform_widgets/platform_responsive_alert_dialog.dart';
-import 'package:flutter_firebase_crashlytics_usage/errors.dart';
+import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 enum UserType { register, login }
@@ -16,6 +17,7 @@ class EmailAndPassworWithSingIn extends StatefulWidget {
   State<EmailAndPassworWithSingIn> createState() =>
       _EmailAndPassworWithSingInState();
 }
+
 class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
   String email = "";
   String password = "";
@@ -27,8 +29,8 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
 
   @override
   Widget build(BuildContext context) {
-    butonText = myUserType == UserType.login ? "Giriş yap" : " Kayıt ol";
-    linkText = myUserType == UserType.login ? "Kayıt ol" : "Giriş yap ";
+    butonText = myUserType == UserType.login ? loginn : registerr;
+    linkText = myUserType == UserType.login ? registerr : loginn;
 
     final userViewmodel = Provider.of<UserViewmodel>(context);
     if (userViewmodel.userModel != null) {
@@ -40,13 +42,18 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
       );
     }
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: white,
       appBar: AppBar(
-        title: const Text("Email ve şifre ile giriş!"),
+        title: Text(
+          emailPasswordSingIn,
+          style: TextStyle(fontSize: 20),
+        ),
       ),
       body: userViewmodel.state == ViewState.idly
           ? SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -59,13 +66,13 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
                         initialValue: "mamercan@gmail.com",
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
-                          hintText: "E mail",
-                          labelText: "E mail girini!",
+                          hintText: emailText,
+                          labelText: enterEmail,
                           border: OutlineInputBorder(),
                           prefixIcon: Icon(Icons.email),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
                       TextFormField(
                         onSaved: (newValue) {
                           password = newValue!;
@@ -73,23 +80,23 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
                         obscureText: true,
                         initialValue: "123123112",
                         decoration: const InputDecoration(
-                          hintText: "Şifre",
-                          labelText: "Şifre girini!",
+                          hintText: passwordText,
+                          labelText: enterPassword,
                           border: OutlineInputBorder(),
                           prefixIcon: Icon(Icons.key),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
                       CustomSingInButton(
-                        color: Colors.purple,
+                        color: purple,
                         text: butonText,
-                        iconWidget: const SizedBox(width: 95),
+                        iconWidget: SizedBox(width: 95.w),
                         onTop: () {
                           onSubmitSingIn();
                         },
-                        textColor: Colors.white,
+                        textColor: white,
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: 25.h),
                       TextButton(
                         onPressed: () {
                           degistirFunc();
@@ -119,12 +126,11 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
             " oturum açan user id" + loginUser.userId.toString(),
           );
       } on FirebaseAuthException catch (e) {
-        debugPrint(
-            "widget  oturum açmada hata yakalandı " + Errors.showError(e.code));
+        debugPrint("widget  oturum açmada hata yakalandı ");
         const PlatformResponsiveAlertDialog(
-          title: "Kullanıcı giriş hatası !",
-          contents: "Bu kullanıcı db de mevcut değil",
-          okButonText: "Tamam",
+          title: userLoginEror,
+          contents: registerContenterrorText,
+          okButonText: ok,
         ).showAllDialog(context);
       }
     } else {
@@ -136,12 +142,11 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
             " kayıt olan user id" + createUser.userId.toString(),
           );
       } on FirebaseAuthException catch (e) {
-        debugPrint("widget kulllanici  oluşturma hata yakalandi" +
-            Errors.showError(e.code));
+        debugPrint("widget kulllanici  oluşturma hata yakalandi");
         const PlatformResponsiveAlertDialog(
-          title: "Oturum açma  hatası!",
-          contents: "Bu Email zaten kullanılıyor! farklı  e mail deneyin!",
-          okButonText: "Tamam",
+          title: loginError,
+          contents: loginContentError,
+          okButonText: ok,
         ).showAllDialog(context);
       }
     }

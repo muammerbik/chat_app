@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/konusma_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/all_user_viewmodel.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class UsersPage extends StatefulWidget {
@@ -9,6 +11,7 @@ class UsersPage extends StatefulWidget {
   @override
   State<UsersPage> createState() => _UsersPageState();
 }
+
 class _UsersPageState extends State<UsersPage> {
   bool _isLoading = false; //intarnetten veri geliyormuyu kontrol etsin.
   ScrollController scrollController = ScrollController();
@@ -26,8 +29,10 @@ class _UsersPageState extends State<UsersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: white,
       appBar: AppBar(
-        title: const Text("Users "),
+        title: const Text(users),
       ),
       body: Consumer<AllUserViewModel>(
         builder: (context, model, child) {
@@ -66,7 +71,8 @@ class _UsersPageState extends State<UsersPage> {
   }
 
   Widget kulliciYokUI() {
-    AllUserViewModel tumKullanicilerViewmodel = Provider.of<AllUserViewModel>(context, listen: false);
+    AllUserViewModel tumKullanicilerViewmodel =
+        Provider.of<AllUserViewModel>(context, listen: false);
     return RefreshIndicator(
       onRefresh: () async {
         return tumKullanicilerViewmodel.refreshIndicator();
@@ -74,11 +80,11 @@ class _UsersPageState extends State<UsersPage> {
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: SizedBox(
-          height: MediaQuery.of(context).size.height - 150,
-          child: const Center(
+          height: MediaQuery.of(context).size.height - 150.h,
+          child: Center(
             child: Text(
-              "Kayıtlı kullanıcı bulunamadı!",
-              style: TextStyle(fontSize: 18),
+              noRegisterUserFound,
+              style: TextStyle(fontSize: 20.sp),
             ),
           ),
         ),
@@ -87,8 +93,8 @@ class _UsersPageState extends State<UsersPage> {
   }
 
   yeniElemanlarYukleniyorIndicator() {
-    return const Padding(
-      padding: EdgeInsets.all(8),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
       child: Center(
         child: CircularProgressIndicator(),
       ),
@@ -96,9 +102,11 @@ class _UsersPageState extends State<UsersPage> {
   }
 
   userListesiElemanlariOlustur(index) {
-    UserViewmodel _userModel = Provider.of<UserViewmodel>(context, listen: false);
-    AllUserViewModel tumKullanicilerViewmodel = Provider.of<AllUserViewModel>(context, listen: false);
-    
+    UserViewmodel _userModel =
+        Provider.of<UserViewmodel>(context, listen: false);
+    AllUserViewModel tumKullanicilerViewmodel =
+        Provider.of<AllUserViewModel>(context, listen: false);
+
     var oankiUser = tumKullanicilerViewmodel.tumKullanicilerListesi[index];
     if (oankiUser.userId == _userModel.userModel!.userId) {
       return Container();
@@ -115,15 +123,15 @@ class _UsersPageState extends State<UsersPage> {
       },
       child: Card(
         child: Container(
-          color: Colors.white,
+          color: white,
           child: ListTile(
             title: Text(
               oankiUser.userName!,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
             ),
             subtitle: Text(oankiUser.email),
             leading: CircleAvatar(
-                backgroundColor: Colors.grey.withAlpha(20),
+                backgroundColor: white.withAlpha(20),
                 backgroundImage: NetworkImage(oankiUser.profilUrl!)),
           ),
         ),
@@ -134,7 +142,8 @@ class _UsersPageState extends State<UsersPage> {
   void dahaFazlaKullaniciGetir() async {
     if (_isLoading == false) {
       _isLoading == true;
-      final AllUserViewModel tumKullanicilerViewmodel=Provider.of<AllUserViewModel>(context, listen: false);
+      final AllUserViewModel tumKullanicilerViewmodel =
+          Provider.of<AllUserViewModel>(context, listen: false);
       await tumKullanicilerViewmodel.dahaFazlaGetir();
       _isLoading == false;
     }

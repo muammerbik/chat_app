@@ -2,12 +2,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_sing_in_button.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/platform_widgets/platform_responsive_alert_dialog.dart';
+import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
 import 'package:flutter_firebase_crashlytics_usage/google_ads.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -41,14 +44,16 @@ class _ProfilePageState extends State<ProfilePage> {
     UserViewmodel _userModel = Provider.of<UserViewmodel>(context);
     textEditingController.text = _userModel.userModel!.userName!;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: white,
       appBar: AppBar(
-        title: Text("Profile "),
+        title: Text(profil),
         actions: [
           TextButton(
             onPressed: () {
               requestConfirmationExit(context);
             },
-            child: Text("exit"),
+            child: Text(exit),
           ),
         ],
       ),
@@ -62,18 +67,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     context: context,
                     builder: (context) {
                       return Container(
-                        height: 170,
+                        height: 170.h,
                         child: Column(
                           children: [
                             ListTile(
-                                title: Text("Camera aç"),
+                                title: Text(takePicture),
                                 leading: Icon(Icons.camera),
                                 onTap: () {
                                   imageFromCamera();
                                   Navigator.of(context).pop();
                                 }),
                             ListTile(
-                              title: Text("Galeri ye git"),
+                              title: Text(selectFromGallery),
                               leading: Icon(Icons.image),
                               onTap: () {
                                 imageFromGallery();
@@ -86,53 +91,58 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                   );
                 },
-                child: CircleAvatar(
-                  radius: 75,
-                  backgroundColor: Colors.indigo,
-                  backgroundImage: profilePhoto == null
-                      ? NetworkImage(_userModel.userModel!.profilUrl!)
-                      : FileImage(profilePhoto!) as ImageProvider,
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  child: CircleAvatar(
+                    radius: 80.r,
+                    backgroundColor: indigo,
+                    backgroundImage: profilePhoto == null
+                        ? NetworkImage(_userModel.userModel!.profilUrl!)
+                        : FileImage(profilePhoto!) as ImageProvider,
+                  ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 child: TextFormField(
                   initialValue: _userModel.userModel!.email,
                   readOnly: true,
                   decoration: InputDecoration(
-                    labelText: "E mail giriniz!",
-                    hintText: "e mail",
+                    labelText: enterEmail,
+                    hintText: emailText,
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 child: TextFormField(
                   controller: textEditingController,
                   decoration: InputDecoration(
-                    labelText: "Username giriniz!",
-                    hintText: "Username",
+                    labelText: enterUsername,
+                    hintText: titleUsername,
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
+              SizedBox(height: 15.h),
               CustomSingInButton(
-                  text: "Kaydet",
-                  iconWidget: SizedBox(width: 117),
-                  textColor: Colors.white,
+                  text: saveText,
+                  iconWidget: SizedBox(width: 120.w),
+                  textColor: white,
                   onTop: () {
                     locator.get<GoogleAds>().showInterstitialAd();
                     updateUserName(context);
                     profilePhotoGuncelle(context);
                   },
-                  color: Colors.purple),
+                  color: purple),
               if (locator.get<GoogleAds>().bannerAd != null)
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
                   child: SizedBox(
-                    width: 320,
-                    height: 50,
+                    width: 380.w,
+                    height: 70.h,
                     child: AdWidget(ad: locator.get<GoogleAds>().bannerAd!),
                   ),
                 )
@@ -151,10 +161,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future requestConfirmationExit(BuildContext context) async {
     final result = await PlatformResponsiveAlertDialog(
-      title: "Emin isiniz ?",
-      contents: "Çıkış işlemi yapmak istediğinize eminmisiniz?",
-      okButonText: "evet",
-      cancelButonText: "vazgeç",
+      title: logOut,
+      contents: logOutContent,
+      okButonText: yes,
+      cancelButonText: no,
     ).showAllDialog(context);
     if (result == true) {
       singOutFunc(context);
@@ -162,24 +172,25 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void updateUserName(BuildContext context) async {
-    UserViewmodel _userModel =Provider.of<UserViewmodel>(context, listen: false);
+    UserViewmodel _userModel =
+        Provider.of<UserViewmodel>(context, listen: false);
     if (_userModel.userModel!.userName != textEditingController.text) {
       var updateResult = await _userModel.updateUserName(
           _userModel.userModel!.userId, textEditingController.text);
 
       if (updateResult) {
         PlatformResponsiveAlertDialog(
-          title: "Başarılı işlem",
-          contents: "Değişiklikler kaydedildi",
-          okButonText: "Tamam",
-        ).showAllDialog(context);
+                title: successfulTransaction,
+                contents: changesSaved,
+                okButonText: ok)
+            .showAllDialog(context);
       } else {
         textEditingController.text == _userModel.userModel!.userName;
         PlatformResponsiveAlertDialog(
-          title: "User name hatası",
-          contents: "UserName zaten kullanımda var, farklı user name deneyin!",
-          okButonText: "Tamam",
-        ).showAllDialog(context);
+                title: userLoginEror,
+                contents: usernameContentError,
+                okButonText: ok)
+            .showAllDialog(context);
       }
     }
   }
@@ -211,10 +222,10 @@ class _ProfilePageState extends State<ProfilePage> {
       print("gelen url = " + url);
       if (url != null) {
         PlatformResponsiveAlertDialog(
-          title: "Profil başarıyla yüklendi !",
-          contents: "profil resmi işlemşeri tamamalandı.",
-          okButonText: "Tamam",
-        ).showAllDialog(context);
+                title: profilephoto,
+                contents: profilePhotoContent,
+                okButonText: ok)
+            .showAllDialog(context);
       }
     }
   }

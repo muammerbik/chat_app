@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
 import 'package:flutter_firebase_crashlytics_usage/google_ads.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/konusma_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/konusma_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class SohbetPage extends StatefulWidget {
@@ -30,8 +32,10 @@ class _SohbetPageState extends State<SohbetPage> {
   Widget build(BuildContext context) {
     final _userModel = Provider.of<UserViewmodel>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: white,
       appBar: AppBar(
-        title: const Text("Chats"),
+        title: const Text(chats),
       ),
       body: FutureBuilder<List<KonusmaModel>>(
         future: _userModel.getAllConversations(_userModel.userModel!.userId),
@@ -68,20 +72,20 @@ class _SohbetPageState extends State<SohbetPage> {
                       child: Dismissible(
                         direction: DismissDirection.startToEnd,
                         background: Container(
-                          color: Colors.red.shade600,
+                          color: red,
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Icon(
                                 Icons.delete,
-                                color: Colors.grey.shade300,
+                                color: white,
                                 size: 35,
                               ),
                               Text(
-                                "Delete",
+                                delete,
                                 style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.grey.shade300,
+                                  fontSize: 20.sp,
+                                  color: white,
                                 ),
                               ),
                             ],
@@ -91,24 +95,25 @@ class _SohbetPageState extends State<SohbetPage> {
                         key: UniqueKey(),
                         child: Card(
                           child: Container(
-                            color: Colors.white,
+                            color: white,
                             child: ListTile(
                               title: Text(
                                 oankiTalk.konusulanUserName.toString(),
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w500),
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w500),
                               ),
                               subtitle: Text(
                                 formatMessage(
                                     oankiTalk.son_yollanan_mesaj.toString()),
-                                style: TextStyle(fontSize: 14),
+                                style: TextStyle(fontSize: 16.sp),
                               ),
                               trailing: Text(
                                 oankiTalk.saat_farki.toString(),
-                                style: TextStyle(fontSize: 15),
+                                style: TextStyle(fontSize: 16.sp),
                               ),
                               leading: CircleAvatar(
-                                backgroundColor: Colors.grey.withAlpha(20),
+                                backgroundColor: white.withAlpha(20),
                                 backgroundImage: NetworkImage(
                                   oankiTalk.konusulanUserProfilUrl.toString(),
                                 ),
@@ -129,11 +134,11 @@ class _SohbetPageState extends State<SohbetPage> {
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Container(
-                    height: MediaQuery.of(context).size.height - 150,
-                    child: const Center(
+                    height: MediaQuery.of(context).size.height - 150.h,
+                    child: Center(
                       child: Text(
-                        "Sohber bulunamadı!",
-                        style: TextStyle(fontSize: 18),
+                        noChatFound,
+                        style: TextStyle(fontSize: 20.sp),
                       ),
                     ),
                   ),

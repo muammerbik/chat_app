@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomSingInButton extends StatefulWidget {
   final Color? textColor;
@@ -23,16 +24,16 @@ class _CustomSingInButtonState extends State<CustomSingInButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.symmetric(horizontal: 15.w),
       child: GestureDetector(
         onTap: widget.onTop,
         child: Container(
           width: double.infinity,
-          height: 55,
+          height: 70.h,
           decoration: ShapeDecoration(
             color: widget.color,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(25.r),
             ),
             shadows: const [
               BoxShadow(
@@ -50,7 +51,7 @@ class _CustomSingInButtonState extends State<CustomSingInButton> {
                 widget.text,
                 style: TextStyle(
                   color: widget.textColor,
-                  fontSize: 20,
+                  fontSize: 24.sp,
                 ),
               ),
               leading: widget.iconWidget,

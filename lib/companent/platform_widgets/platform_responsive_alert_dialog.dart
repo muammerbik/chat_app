@@ -10,8 +10,7 @@ class PlatformResponsiveAlertDialog extends PlatformResponsiveWidget {
   final String? cancelButonText;
 
   const PlatformResponsiveAlertDialog(
-      {
-      required this.title,
+      {required this.title,
       required this.contents,
       required this.okButonText,
       this.cancelButonText});
@@ -31,6 +30,7 @@ class PlatformResponsiveAlertDialog extends PlatformResponsiveWidget {
   @override
   Widget buildAndroidPlatform(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.grey.shade100,
       title: Text(title),
       content: Text(contents),
       actions: dialogButtonSetting(context),

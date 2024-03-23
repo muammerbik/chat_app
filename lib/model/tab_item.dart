@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
 
 enum TabItem { Kullanicilar, Sohbet, Profil }
 
@@ -14,12 +15,12 @@ class TabItemData {
 
   static Map<TabItem, TabItemData> allPerson = {
     TabItem.Kullanicilar: TabItemData(
-      "Kullanıcılar",
+      users,
       Icons.supervisor_account_outlined,
     ),
-    TabItem.Sohbet: TabItemData("Sohbet", Icons.chat),
+    TabItem.Sohbet: TabItemData(chats, Icons.chat),
     TabItem.Profil: TabItemData(
-      "Profil",
+      profil,
       Icons.person_outlined,
     ),
   };

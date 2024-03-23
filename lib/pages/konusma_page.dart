@@ -1,9 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +39,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
     UserModel _sohbetEdilenUser = widget.sohbetEdilenUser;
 
     return Scaffold(
+      backgroundColor: white,
       appBar: AppBar(
         title: Row(
           mainAxisSize: MainAxisSize.min,
@@ -47,10 +50,10 @@ class _KonusmaPageState extends State<KonusmaPage> {
               backgroundColor: Colors.transparent,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 8),
+              padding: EdgeInsets.only(left: 8.w),
               child: Text(
                 widget.sohbetEdilenUser.userName ?? 'Bilinmeyen Kullanıcı',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 20.sp),
               ),
             ),
           ],
@@ -84,7 +87,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
               ),
             ),
             Container(
-              padding: const EdgeInsets.only(bottom: 18, left: 8),
+              padding: EdgeInsets.only(bottom: 20.h, left: 12.w, top: 15.h),
               child: Row(
                 children: [
                   Expanded(
@@ -92,20 +95,20 @@ class _KonusmaPageState extends State<KonusmaPage> {
                       autofocus: true,
                       controller: textEditingController,
                       cursorColor: Colors.blue,
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
+                      style: TextStyle(fontSize: 18.sp, color: Colors.black),
                       decoration: InputDecoration(
                         fillColor: Colors.grey.shade100,
                         filled: true,
-                        hintText: "Mesaj girin!",
+                        hintText: enterMessage,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: Colors.red, width: 2),
+                          borderRadius: BorderRadius.circular(30.r),
+                          borderSide: BorderSide(color: black, width: 2.w),
                         ),
                       ),
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    margin: EdgeInsets.symmetric(horizontal: 8.w),
                     child: FloatingActionButton(
                       elevation: 0,
                       backgroundColor: Colors.blue.shade700,
@@ -146,8 +149,8 @@ class _KonusmaPageState extends State<KonusmaPage> {
   }
 
   Widget konusmaBalonlari(MesajModel oankiMesaj) {
-    Color messageSender = Colors.purple;
-    Color messageField = Colors.indigo;
+    Color messageSender = purple;
+    Color messageField = indigo;
     var fromMe = oankiMesaj.bendenMi;
 
     var timeAndMinuteValue = "";
@@ -160,7 +163,10 @@ class _KonusmaPageState extends State<KonusmaPage> {
 
     if (fromMe) {
       return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.only(
+          left: 45.w,
+          top: 10.h,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -171,19 +177,20 @@ class _KonusmaPageState extends State<KonusmaPage> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: messageSender,
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16.r),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10.w, vertical: 10.h),
                       child: Text(
                         oankiMesaj.mesaj,
-                        style: TextStyle(fontSize: 15, color: Colors.white),
+                        style: TextStyle(fontSize: 17.sp, color: Colors.white),
                       ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Text(timeAndMinuteValue),
                 ),
               ],
@@ -193,7 +200,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
       );
     } else {
       return Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 5.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -211,19 +218,20 @@ class _KonusmaPageState extends State<KonusmaPage> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: messageField,
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16.r),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
                       child: Text(
                         oankiMesaj.mesaj,
-                        style: TextStyle(fontSize: 15, color: Colors.white),
+                        style: TextStyle(fontSize: 17.sp, color: Colors.white),
                       ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Text(timeAndMinuteValue),
                 ),
               ],
