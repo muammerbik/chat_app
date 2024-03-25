@@ -98,11 +98,12 @@ class _SohbetPageState extends State<SohbetPage> {
                               oankiTalk.kimle_konusuyor);
                           if (sonuc) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text("Sohbet başarıyla silindi")));
+                                backgroundColor:
+                                    Color.fromARGB(255, 9, 108, 142),
+                                content: Text(chatDelete)));
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content:
-                                    Text("Sohbet silinirken bir hata oluştu")));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(chaNotDelete)));
                           }
                         },
                         key: UniqueKey(),

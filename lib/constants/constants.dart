@@ -51,3 +51,5 @@ const noChatFound = "No chat found!";
 const chats = "Chats";
 const users = "Users ";
 const noRegisterUserFound = "No registered users found!";
+const chatDelete = "Chat deleted successfully";
+const chaNotDelete="An error occurred while deleting the chat";

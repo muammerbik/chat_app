@@ -199,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
     var cameraPhoto = await picker.pickImage(source: ImageSource.camera);
     if (cameraPhoto != null) {
       setState(() {
-        profilePhoto = File(cameraPhoto.path); // XFile'dan File'a dönüştürme
+        profilePhoto = File(cameraPhoto.path);
       });
     }
   }
@@ -208,7 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
     var galleryPhoto = await picker.pickImage(source: ImageSource.gallery);
     if (galleryPhoto != null) {
       setState(() {
-        profilePhoto = File(galleryPhoto.path); // XFile'dan File'a dönüştürme
+        profilePhoto = File(galleryPhoto.path);
       });
     }
   }
