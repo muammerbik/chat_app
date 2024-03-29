@@ -1,4 +1,4 @@
-import 'package:flutter_firebase_crashlytics_usage/google_ads.dart';
+import 'package:flutter_firebase_crashlytics_usage/service/advertising/google_ads.dart';
 import 'package:flutter_firebase_crashlytics_usage/repository/repository.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/fake_auth_service.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/firebase_auth_service.dart';

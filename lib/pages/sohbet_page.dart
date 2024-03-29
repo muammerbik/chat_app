@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
-import 'package:flutter_firebase_crashlytics_usage/google_ads.dart';
+import 'package:flutter_firebase_crashlytics_usage/service/advertising/google_ads.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/konusma_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/konusma_page.dart';

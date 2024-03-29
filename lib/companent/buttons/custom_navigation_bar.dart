@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
-import 'package:flutter_firebase_crashlytics_usage/google_ads.dart';
+import 'package:flutter_firebase_crashlytics_usage/service/advertising/google_ads.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/tab_item.dart';
 
 class CustomNavigationBar extends StatefulWidget {

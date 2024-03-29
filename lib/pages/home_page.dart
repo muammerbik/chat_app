@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_navigation_bar.dart';
-import 'package:flutter_firebase_crashlytics_usage/firebase_notification.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/tab_item.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
@@ -31,7 +30,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   AuthBase firebaseAuthService = locator<FirebaseAuthService>();
   TabItem currentTabItem = TabItem.Kullanicilar;
-  final FCMMethods fcmMethods = FCMMethods();
+
 
   Map<TabItem, Widget> allUsers() {
     return {
@@ -50,11 +49,6 @@ class _HomePageState extends State<HomePage> {
     TabItem.Sohbet: GlobalKey<NavigatorState>(),
   };
 
-  @override
-  void initState() {
-    FCMMethods.initFCM();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

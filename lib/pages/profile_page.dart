@@ -4,7 +4,7 @@ import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_sing
 import 'package:flutter_firebase_crashlytics_usage/companent/platform_widgets/platform_responsive_alert_dialog.dart';
 import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
-import 'package:flutter_firebase_crashlytics_usage/google_ads.dart';
+import 'package:flutter_firebase_crashlytics_usage/service/advertising/google_ads.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
