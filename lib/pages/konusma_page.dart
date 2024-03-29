@@ -39,7 +39,6 @@ class _KonusmaPageState extends State<KonusmaPage> {
     UserModel _sohbetEdilenUser = widget.sohbetEdilenUser;
 
     return Scaffold(
-      backgroundColor: white,
       appBar: AppBar(
         title: Row(
           mainAxisSize: MainAxisSize.min,
@@ -47,12 +46,14 @@ class _KonusmaPageState extends State<KonusmaPage> {
             CircleAvatar(
                 backgroundImage:
                     NetworkImage(widget.sohbetEdilenUser.profilUrl! ?? ""),
-                backgroundColor: grey.withAlpha(30)),
-            Padding(
-              padding: EdgeInsets.only(left: 8.w),
-              child: Text(
-                widget.sohbetEdilenUser.userName ?? 'Bilinmeyen Kullanıcı',
-                style: TextStyle(fontSize: 20.sp),
+                backgroundColor: grey.shade100),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(left: 8.w, right: 16),
+                child: Text(
+                  widget.sohbetEdilenUser.userName ?? 'Bilinmeyen Kullanıcı',
+                  style: TextStyle(fontSize: 20.sp),
+                ),
               ),
             ),
           ],
@@ -93,15 +94,16 @@ class _KonusmaPageState extends State<KonusmaPage> {
                     child: TextField(
                       autofocus: true,
                       controller: textEditingController,
-                      cursorColor: Colors.blue,
-                      style: TextStyle(fontSize: 18.sp, color: Colors.black),
+                      cursorColor: black,
+                      style: TextStyle(fontSize: 18.sp, color: black),
                       decoration: InputDecoration(
-                        fillColor: Colors.grey.shade100,
+                        fillColor: grey.shade100,
                         filled: true,
                         hintText: enterMessage,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.r),
-                          borderSide: BorderSide(color: black, width: 2.w),
+                          borderSide:
+                              BorderSide(color: lightIndigo, width: 2.w),
                         ),
                       ),
                     ),
@@ -110,11 +112,11 @@ class _KonusmaPageState extends State<KonusmaPage> {
                     margin: EdgeInsets.symmetric(horizontal: 8.w),
                     child: FloatingActionButton(
                       elevation: 0,
-                      backgroundColor: Colors.blue.shade700,
+                      backgroundColor: indigo,
                       child: const Icon(
                         Icons.navigation,
                         size: 35,
-                        color: Colors.white,
+                        color: white,
                       ), //Butona tıklandığında stream yapısıyla beraber ekranda  yazılacak mesajları kaydediyorum.
                       onPressed: () async {
                         if (textEditingController.text.trim().isNotEmpty) {
@@ -183,7 +185,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
                           horizontal: 10.w, vertical: 10.h),
                       child: Text(
                         oankiMesaj.mesaj,
-                        style: TextStyle(fontSize: 17.sp, color: Colors.white),
+                        style: TextStyle(fontSize: 17.sp, color: white),
                       ),
                     ),
                   ),
@@ -207,6 +209,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CircleAvatar(
+                  backgroundColor: grey.shade200,
                   backgroundImage:
                       NetworkImage(widget.sohbetEdilenUser.profilUrl!),
                 ),
@@ -224,7 +227,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
                           horizontal: 10, vertical: 10),
                       child: Text(
                         oankiMesaj.mesaj,
-                        style: TextStyle(fontSize: 17.sp, color: Colors.white),
+                        style: TextStyle(fontSize: 17.sp, color: white),
                       ),
                     ),
                   ),

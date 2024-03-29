@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_base.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,7 +22,10 @@ class FirebaseAuthService implements AuthBase {
   }
 
   UserModel? _userFromFirebase(User user) {
-    return UserModel(userId: user.uid, email: user.email.toString(),);
+    return UserModel(
+      userId: user.uid,
+      email: user.email.toString(),
+    );
   }
 
   @override
@@ -49,35 +53,57 @@ class FirebaseAuthService implements AuthBase {
     return false;
   }
 
-  @override
   Future<UserModel?> googleWithSingIn() async {
-    GoogleSignIn googleSignIn = GoogleSignIn();
-    GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-    if (googleUser != null) {
-      GoogleSignInAuthentication googleAutUser =
-          await googleUser.authentication;
-      if (googleAutUser.idToken != null && googleAutUser.accessToken != null) {
-        var userCredential = await firebaseAuth.signInWithCredential(
-          GoogleAuthProvider.credential(accessToken: googleAutUser.accessToken, idToken: googleAutUser.idToken),);
-        User? _user = userCredential.user;
-        return _userFromFirebase(_user!);
+    try {
+      // Google ile giriş yap
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser != null) {
+        final GoogleSignInAuthentication? googleAuth =
+            await googleUser?.authentication;
+
+        // Google kimlik doğrulama bilgilerini al
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+
+        // Firebase Authentication'a giriş yap
+        final UserCredential userCredential =
+            await firebaseAuth.signInWithCredential(credential);
+
+        // Oluşturulan kullanıcıyı döndür
+        final User? user = userCredential.user;
+        if (user != null) {
+          return UserModel(
+            userId: user.uid,
+            email: user.email.toString(),
+            // Diğer kullanıcı bilgilerini burada alabilirsiniz
+          );
+        }
       } else {
+        // Google girişi iptal edildiğinde null döndür
         return null;
       }
-    } else {
+
+      return null;
+    } catch (e) {
+      print('Google ile giriş yaparken hata oluştu: $e');
       return null;
     }
   }
 
   @override
   Future<UserModel?> createUserWithSingIn(String email, String password) async {
-    var userCredential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+    var userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+        email: email, password: password);
     return _userFromFirebase(userCredential.user!);
   }
 
   @override
-  Future<UserModel?> emailAndPasswordWithSingIn(String email, String password) async {
-    var userCredential = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+  Future<UserModel?> emailAndPasswordWithSingIn(
+      String email, String password) async {
+    var userCredential = await firebaseAuth.signInWithEmailAndPassword(
+        email: email, password: password);
     return _userFromFirebase(userCredential.user!);
   }
 }

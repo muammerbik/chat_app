@@ -9,8 +9,9 @@ const indigo = Colors.indigo;
 const red = Colors.red;
 const transparent = Colors.transparent;
 const grey = Colors.grey;
+const lightIndigo = Color(0xFFE8EAF6);
 //Text
-const appName = "Messaging App";
+const appName = "Chat App";
 const singIn = "Sing-in";
 const googlSsingIn = "Google Sing-in";
 const faceSingIn = "Facebook Sing-in";
@@ -52,4 +53,4 @@ const chats = "Chats";
 const users = "Users ";
 const noRegisterUserFound = "No registered users found!";
 const chatDelete = "Chat deleted successfully";
-const chaNotDelete="An error occurred while deleting the chat";
+const chaNotDelete = "An error occurred while deleting the chat";

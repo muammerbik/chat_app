@@ -28,7 +28,12 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
     try {
       state = ViewState.busy;
       _userModel = await repository.currentUser();
-      return _userModel;
+      if (_userModel != null) {
+        return _userModel;
+      } else
+        {
+          return null;
+        }
     } catch (e) {
       debugPrint(
         "currentt user hatasi viewmodel $e",
@@ -75,7 +80,11 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
     try {
       state = ViewState.busy;
       _userModel = await repository.googleWithSingIn();
-      return _userModel;
+      if (_userModel != null) {
+        return _userModel;
+      } else {
+        return null;
+      }
     } catch (e) {
       debugPrint("singInAnonymously hatası viewmodel$e");
       return null;
@@ -83,6 +92,7 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
       state = ViewState.idly;
     }
   }
+  
 
   @override
   Future<UserModel?> createUserWithSingIn(String email, String password) async {
@@ -141,7 +151,9 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
         ensonGetirilenUser, getirilecekElemanSayisi);
   }
 
-  Future<bool> chatDelete(String currentUserId, String sohbetEdilenUserId) async {
-    return repository.chatDelete( currentUserId,  sohbetEdilenUserId);
+  Future<bool> chatDelete(
+      String currentUserId, String sohbetEdilenUserId) async {
+    return repository.chatDelete(currentUserId, sohbetEdilenUserId);
   }
+  
 }

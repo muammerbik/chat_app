@@ -31,66 +31,68 @@ class SingInScreenView extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: white,
-      appBar: AppBar(
-        title: Text(appName),
-      ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 60.h),
+          SizedBox(height: 150.h),
           Text(
-            singIn,
-            style: TextStyle(fontSize: 45.sp, fontWeight: FontWeight.bold),
+            appName,
+            style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
           ),
-          SizedBox(height: 40.h),
-          CustomSingInButton(
-            text: googlSsingIn,
-            color: white,
-            onTop: () {
-              signInWithGoogle(context);
-            },
-            iconWidget: Image.asset(
-              "assets/images/google.png",
-              fit: BoxFit.contain,
-              width: 40.w,
-            ),
-          ),
-          SizedBox(height: 18.h),
-          CustomSingInButton(
-            textColor: white,
-            text: faceSingIn,
-            onTop: () {},
-            color: facebookColor,
-            iconWidget: Image.asset(
-              "assets/images/facebook.png",
-              fit: BoxFit.contain,
-              width: 40.w,
-            ),
-          ),
-          SizedBox(height: 18.h),
-          CustomSingInButton(
-            text: emailSingIn,
-            onTop: () {
-              emailAndPasswordWithSingIn(context);
-            },
-            color: white,
-            iconWidget: Image.asset(
-              "assets/images/gmail.png",
-              fit: BoxFit.contain,
-              width: 40.w,
-            ),
-          ),
-          SizedBox(height: 18.h),
-          CustomSingInButton(
-            text: guestSingIn,
-            onTop: () {
-              singInGuest(context);
-            },
-            color: white,
-            iconWidget: Image.asset(
-              "assets/images/user.png",
-              fit: BoxFit.contain,
-              width: 40.w,
+          SizedBox(height: 50.h),
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Container(
+                height: 300,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: grey.shade50,
+                    borderRadius: BorderRadius.circular(30),
+                    border:
+                        Border.all(color: black.withOpacity(0.5), width: 2)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20.h),
+                    Text(
+                      singIn,
+                      style: TextStyle(
+                        fontSize: 45.sp,
+                        fontWeight: FontWeight.bold,
+                        color: black,
+                      ),
+                    ),
+                    SizedBox(height: 25.h),
+                    CustomSingInButton(
+                      text: googlSsingIn,
+                      color: white,
+                      onTop: () {
+                        signInWithGoogle(context);
+                      },
+                      iconWidget: Image.asset(
+                        "assets/images/google.png",
+                        fit: BoxFit.contain,
+                        width: 40.w,
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                    CustomSingInButton(
+                      text: emailSingIn,
+                      onTop: () {
+                        emailAndPasswordWithSingIn(context);
+                      },
+                      color: white,
+                      iconWidget: Image.asset(
+                        "assets/images/gmail.png",
+                        fit: BoxFit.contain,
+                        width: 40.w,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],

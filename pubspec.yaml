@@ -52,6 +52,7 @@ dependencies:
   google_mobile_ads: ^4.0.0
   timeago: ^3.6.1
   flutter_screenutil: ^5.9.0
+  flutter_facebook_auth: ^6.1.1
 
 
 dev_dependencies:

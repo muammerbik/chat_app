@@ -33,7 +33,6 @@ class _SohbetPageState extends State<SohbetPage> {
     final _userModel = Provider.of<UserViewmodel>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: white,
       appBar: AppBar(
         title: const Text(chats),
       ),
@@ -94,16 +93,29 @@ class _SohbetPageState extends State<SohbetPage> {
                         ),
                         onDismissed: (direction) async {
                           bool sonuc = await _userModel.chatDelete(
-                              _userModel.userModel!.userId,
-                              oankiTalk.kimle_konusuyor);
+                            _userModel.userModel!.userId,
+                            oankiTalk.kimle_konusuyor,
+                          );
                           if (sonuc) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                backgroundColor:
-                                    Color.fromARGB(255, 9, 108, 142),
-                                content: Text(chatDelete)));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: lightIndigo,
+                                content: Text(
+                                  chatDelete,
+                                  style: TextStyle(color: black, fontSize: 16),
+                                ),
+                              ),
+                            );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(chaNotDelete)));
+                              SnackBar(
+                                backgroundColor: lightIndigo,
+                                content: Text(
+                                  chaNotDelete,
+                                  style: TextStyle(color: black, fontSize: 16),
+                                ),
+                              ),
+                            );
                           }
                         },
                         key: UniqueKey(),
@@ -112,7 +124,9 @@ class _SohbetPageState extends State<SohbetPage> {
                             color: white,
                             child: ListTile(
                               title: Text(
-                                oankiTalk.konusulanUserName.toString(),
+                                formatMessage(
+                                  oankiTalk.konusulanUserName.toString(),
+                                ),
                                 style: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w500),
@@ -124,7 +138,7 @@ class _SohbetPageState extends State<SohbetPage> {
                               ),
                               trailing: Text(
                                 oankiTalk.saat_farki.toString(),
-                                style: TextStyle(fontSize: 16.sp),
+                                style: TextStyle(fontSize: 13.sp),
                               ),
                               leading: CircleAvatar(
                                 backgroundColor: grey.withAlpha(30),

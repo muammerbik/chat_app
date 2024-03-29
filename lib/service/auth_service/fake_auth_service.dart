@@ -42,4 +42,16 @@ class FakeAuthService implements AuthBase {
     // TODO: implement emailAndPasswordWithSingIn
     throw UnimplementedError();
   }
+  
+  @override
+  Future<UserModel?> signInWithGoogle() {
+    // TODO: implement signInWithGoogle
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<UserModel> signInWithFacebook() {
+    // TODO: implement signInWithFacebook
+    throw UnimplementedError();
+  }
 }

@@ -35,9 +35,9 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
     final userViewmodel = Provider.of<UserViewmodel>(context);
     if (userViewmodel.userModel != null) {
       Future.delayed(
-        const Duration(microseconds: 10),
+        const Duration(milliseconds: 1),
         () {
-          Navigator.of(context).pop();
+          Navigator.of(context).popUntil(ModalRoute.withName("/"));
         },
       );
     }
@@ -62,8 +62,14 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
                         onSaved: (newValue) {
                           email = newValue!;
                         },
+                        validator: (value) {
+                          if (value == null || value.isEmpty ) {
+                            return 'E-mail cannot be empty! and enter valid email';
+                          }
+                          return null;
+                        },
                         autofocus: true,
-                        initialValue: "mamercan@gmail.com",
+                        //  initialValue: "mamercan@gmail.com",
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                           hintText: emailText,
@@ -77,8 +83,14 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
                         onSaved: (newValue) {
                           password = newValue!;
                         },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'password cannot be empty!';
+                          }
+                          return null; // Geçerli bir giriş olduğunda null döndürülür
+                        },
                         obscureText: true,
-                        initialValue: "123123112",
+                        // initialValue: "123123112",
                         decoration: const InputDecoration(
                           hintText: passwordText,
                           labelText: enterPassword,
@@ -115,39 +127,44 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
   }
 
   void onSubmitSingIn() async {
+    formKey.currentState!.validate();
     formKey.currentState!.save();
     final usermodel = Provider.of<UserViewmodel>(context, listen: false);
-    if (myUserType == UserType.login) {
-      try {
-        UserModel? loginUser =
-            await usermodel.emailAndPasswordWithSingIn(email, password);
-        if (loginUser != null)
-          print(
-            " oturum açan user id" + loginUser.userId.toString(),
-          );
-      } on FirebaseAuthException catch (e) {
-        debugPrint("widget  oturum açmada hata yakalandı ");
-        const PlatformResponsiveAlertDialog(
-          title: userLoginEror,
-          contents: registerContenterrorText,
-          okButonText: ok,
-        ).showAllDialog(context);
-      }
+    if (email.isEmpty && password.isEmpty) {
+      return null;
     } else {
-      try {
-        UserModel? createUser =
-            await usermodel.createUserWithSingIn(email, password);
-        if (createUser != null)
-          print(
-            " kayıt olan user id" + createUser.userId.toString(),
-          );
-      } on FirebaseAuthException catch (e) {
-        debugPrint("widget kulllanici  oluşturma hata yakalandi");
-        const PlatformResponsiveAlertDialog(
-          title: loginError,
-          contents: loginContentError,
-          okButonText: ok,
-        ).showAllDialog(context);
+      if (myUserType == UserType.login) {
+        try {
+          UserModel? loginUser =
+              await usermodel.emailAndPasswordWithSingIn(email, password);
+          if (loginUser != null)
+            print(
+              " oturum açan user id" + loginUser.userId.toString(),
+            );
+        } on FirebaseAuthException catch (e) {
+          debugPrint("widget  oturum açmada hata yakalandı ");
+          const PlatformResponsiveAlertDialog(
+            title: userLoginEror,
+            contents: registerContenterrorText,
+            okButonText: ok,
+          ).showAllDialog(context);
+        }
+      } else {
+        try {
+          UserModel? createUser =
+              await usermodel.createUserWithSingIn(email, password);
+          if (createUser != null)
+            print(
+              " kayıt olan user id" + createUser.userId.toString(),
+            );
+        } on FirebaseAuthException catch (e) {
+          debugPrint("widget kulllanici  oluşturma hata yakalandi");
+          const PlatformResponsiveAlertDialog(
+            title: loginError,
+            contents: loginContentError,
+            okButonText: ok,
+          ).showAllDialog(context);
+        }
       }
     }
   }

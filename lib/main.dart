@@ -37,12 +37,14 @@ class MyApp extends StatelessWidget {
         builder: (_, child) => MaterialApp(
           debugShowCheckedModeBanner: false,
           title: appName,
+          
           theme: ThemeData(
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            appBarTheme: const AppBarTheme(color: white),
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(seedColor: white),
-          ),
+            
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              appBarTheme: const AppBarTheme(backgroundColor: lightIndigo),
+              useMaterial3: true,
+              scaffoldBackgroundColor: white,
+            ),
           home: const LandingPage(),
         ),
       ),

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomSingInButton extends StatefulWidget {
@@ -24,7 +25,7 @@ class _CustomSingInButtonState extends State<CustomSingInButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15.w),
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: GestureDetector(
         onTap: widget.onTop,
         child: Container(
@@ -37,7 +38,7 @@ class _CustomSingInButtonState extends State<CustomSingInButton> {
             ),
             shadows: const [
               BoxShadow(
-                color: Colors.grey,
+                color: grey,
                 blurRadius: 3,
                 offset: Offset(0, 2),
                 spreadRadius: 2,

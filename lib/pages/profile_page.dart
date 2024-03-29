@@ -45,7 +45,6 @@ class _ProfilePageState extends State<ProfilePage> {
     textEditingController.text = _userModel.userModel!.userName!;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: white,
       appBar: AppBar(
         title: Text(profil),
         actions: [
@@ -93,13 +92,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 child: Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                  child: CircleAvatar(
-                    radius: 80.r,
-                    backgroundColor: Colors.grey.shade200,
-                    backgroundImage: profilePhoto == null
-                        ? NetworkImage(_userModel.userModel!.profilUrl!)
-                        : FileImage(profilePhoto!) as ImageProvider,
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(82.r),
+                      border: Border.all(color: Colors.black),
+                    ),
+                    child: CircleAvatar(
+                      radius: 80.r,
+                      backgroundColor: lightIndigo,
+                      backgroundImage: profilePhoto == null
+                          ? NetworkImage(_userModel.userModel!.profilUrl!)
+                          : FileImage(profilePhoto!) as ImageProvider,
+                    ),
                   ),
                 ),
               ),

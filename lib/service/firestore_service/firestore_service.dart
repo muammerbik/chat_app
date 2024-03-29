@@ -9,17 +9,18 @@ class FirestoreServices implements DbBase {
 
   @override
   Future<bool> saveUser(UserModel userModel) async {
-    await firestore
-        .collection("users")
-        .doc(userModel.userId)
-        .set(userModel.toMap());
-
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await firestore.doc("users/${userModel.userId}").get();
-    Map<String, dynamic>? geleenData = documentSnapshot.data();
-    UserModel geleenDataModeli = UserModel.fromMap(geleenData!);
-    print("okunan user nesnesi  " + geleenDataModeli.toString());
-    return true;
+    if (documentSnapshot.data() == null) {
+      await firestore
+          .collection("users")
+          .doc(userModel.userId)
+          .set(userModel.toMap());
+      return true;
+    } else {
+      return true;
+    }
+
   }
 
   @override
@@ -199,33 +200,41 @@ class FirestoreServices implements DbBase {
       throw Exception("Data not found");
     }
   }
-  
-@override
-Future<bool> chatDelete(String currentUserId, String sohbetEdilenUserId) async {
-  String chatId = currentUserId + "--" + sohbetEdilenUserId;
-  String reverseChatId = sohbetEdilenUserId + "--" + currentUserId;
 
-  try {
-    // Konuşmayı sil
-    await firestore.collection("konusanlar").doc(chatId).delete();
-    await firestore.collection("konusanlar").doc(reverseChatId).delete();
+  @override
+  Future<bool> chatDelete(
+      String currentUserId, String sohbetEdilenUserId) async {
+    String chatId = currentUserId + "--" + sohbetEdilenUserId;
+    String reverseChatId = sohbetEdilenUserId + "--" + currentUserId;
 
-    // Mesajları sil
-    var messagesSnapshot = await firestore.collection("konusanlar").doc(chatId).collection("mesajlar").get();
-    for (var doc in messagesSnapshot.docs) {
-      await doc.reference.delete();
+    try {
+      // Konuşmayı sil
+      await firestore.collection("konusanlar").doc(chatId).delete();
+      await firestore.collection("konusanlar").doc(reverseChatId).delete();
+
+      // Mesajları sil
+      var messagesSnapshot = await firestore
+          .collection("konusanlar")
+          .doc(chatId)
+          .collection("mesajlar")
+          .get();
+      for (var doc in messagesSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      var reverseMessagesSnapshot = await firestore
+          .collection("konusanlar")
+          .doc(reverseChatId)
+          .collection("mesajlar")
+          .get();
+      for (var doc in reverseMessagesSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      return true;
+    } catch (e) {
+      print("Sohbet silme hatası: $e");
+      return false;
     }
-
-    var reverseMessagesSnapshot = await firestore.collection("konusanlar").doc(reverseChatId).collection("mesajlar").get();
-    for (var doc in reverseMessagesSnapshot.docs) {
-      await doc.reference.delete();
-    }
-
-    return true;
-  } catch (e) {
-    print("Sohbet silme hatası: $e");
-    return false;
   }
-}
-
 }

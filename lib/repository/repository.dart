@@ -29,7 +29,11 @@ class Repository implements AuthBase {
       return await fakeAuthService.currentUser();
     } else {
       UserModel? userModel = await firebaseAuthService.currentUser();
-      return await fireStoreService.readUser(userModel!.userId);
+      if (userModel != null) {
+        return await fireStoreService.readUser(userModel.userId);
+      } else {
+        return null;
+      }
     }
   }
 
@@ -57,10 +61,15 @@ class Repository implements AuthBase {
       return await fakeAuthService.googleWithSingIn();
     } else {
       UserModel? usermodel = await firebaseAuthService.googleWithSingIn();
-      // google ile giriş yaptıktan sonra  verileri firebase firestore kaydettim. Ardından kaydedilen verileri okudum terminalde gösterdim.
-      bool result = await fireStoreService.saveUser(usermodel!);
-      if (result) {
-        return await fireStoreService.readUser(usermodel.userId);
+      if (usermodel != null) {
+        // google ile giriş yaptıktan sonra  verileri firebase firestore kaydettim. Ardından kaydedilen verileri okudum terminalde gösterdim.
+        bool result = await fireStoreService.saveUser(usermodel);
+        if (result) {
+          return await fireStoreService.readUser(usermodel.userId);
+        } else {
+          await fakeAuthService.singOut();
+          return null;
+        }
       } else {
         return null;
       }
@@ -95,6 +104,7 @@ class Repository implements AuthBase {
       return await fireStoreService.readUser(usermodel!.userId);
     }
   }
+
 
   Future<bool> updateUserName(String userId, String newUserName) async {
     if (appMode == AppMode.DEBUG) {
@@ -190,11 +200,13 @@ class Repository implements AuthBase {
     }
   }
 
-  Future<bool> chatDelete(String currentUserId, String sohbetEdilenUserId) async {
+  Future<bool> chatDelete(
+      String currentUserId, String sohbetEdilenUserId) async {
     if (appMode == AppMode.DEBUG) {
       return false;
     } else {
-     return  await fireStoreService.chatDelete( currentUserId, sohbetEdilenUserId);
+      return await fireStoreService.chatDelete(
+          currentUserId, sohbetEdilenUserId);
     }
   }
 }
