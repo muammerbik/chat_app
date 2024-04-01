@@ -30,6 +30,7 @@ class UserViewmodel with ChangeNotifier implements AuthBase {
       _userModel = await repository.currentUser();
       if (_userModel != null) {
         return _userModel;
+        
       } else
         {
           return null;

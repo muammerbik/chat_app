@@ -30,14 +30,14 @@ class _SohbetPageState extends State<SohbetPage> {
 
   @override
   Widget build(BuildContext context) {
-    final _userModel = Provider.of<UserViewmodel>(context);
+    final userModel = Provider.of<UserViewmodel>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(chats),
       ),
       body: FutureBuilder<List<KonusmaModel>>(
-        future: _userModel.getAllConversations(_userModel.userModel!.userId),
+        future: userModel.getAllConversations(userModel.userModel!.userId),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -60,7 +60,7 @@ class _SohbetPageState extends State<SohbetPage> {
                         Navigator.of(context, rootNavigator: true).push(
                           MaterialPageRoute(
                             builder: (context) => KonusmaPage(
-                              currentUser: _userModel.userModel!,
+                              currentUser: userModel.userModel!,
                               sohbetEdilenUser: UserModel.withIdAndProfileUrl(
                                   userName: oankiTalk.konusulanUserName,
                                   userId: oankiTalk.kimle_konusuyor,
@@ -76,7 +76,7 @@ class _SohbetPageState extends State<SohbetPage> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.delete,
                                 color: white,
                                 size: 35,
@@ -92,13 +92,13 @@ class _SohbetPageState extends State<SohbetPage> {
                           ),
                         ),
                         onDismissed: (direction) async {
-                          bool sonuc = await _userModel.chatDelete(
-                            _userModel.userModel!.userId,
+                          bool sonuc = await userModel.chatDelete(
+                            userModel.userModel!.userId,
                             oankiTalk.kimle_konusuyor,
                           );
                           if (sonuc) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 backgroundColor: lightIndigo,
                                 content: Text(
                                   chatDelete,
@@ -108,7 +108,7 @@ class _SohbetPageState extends State<SohbetPage> {
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 backgroundColor: lightIndigo,
                                 content: Text(
                                   chaNotDelete,
@@ -161,7 +161,7 @@ class _SohbetPageState extends State<SohbetPage> {
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: Container(
+                  child: SizedBox(
                     height: MediaQuery.of(context).size.height - 150.h,
                     child: Center(
                       child: Text(
@@ -179,15 +179,12 @@ class _SohbetPageState extends State<SohbetPage> {
     );
   }
 
-  Future<Null> refleshChat() async {
-    setState(
-      () {
-        Future.delayed(
-          const Duration(seconds: 1),
-        );
-      },
-    );
-    return null;
+  Future<void> refleshChat() async {
+    setState(() {});
+    await Future.delayed(const Duration(
+        milliseconds: 500)); // Yenileme animasyonu için kısa bir bekleme süresi
+    setState(() {});
+    return;
   }
 
   String formatMessage(String message) {

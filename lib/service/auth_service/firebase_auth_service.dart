@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_base.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -34,7 +33,7 @@ class FirebaseAuthService implements AuthBase {
       var userCredential = await firebaseAuth.signInAnonymously();
       return _userFromFirebase(userCredential.user!);
     } catch (e) {
-      debugPrint("singInAnonymously hattaaa" + e.toString());
+      debugPrint("singInAnonymously hattaaa$e");
       return null;
     }
   }
@@ -44,27 +43,27 @@ class FirebaseAuthService implements AuthBase {
     try {
       final googleSignIn = GoogleSignIn();
       googleSignIn.signOut();
-      //firebaseden de çıkıs yapmak için yazdım!
       await firebaseAuth.signOut();
       return true;
     } catch (e) {
-      debugPrint("hataaa signOut" + e.toString());
+      debugPrint("hataaa signOut$e");
     }
     return false;
   }
 
+  @override
   Future<UserModel?> googleWithSingIn() async {
     try {
       // Google ile giriş yap
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser != null) {
-        final GoogleSignInAuthentication? googleAuth =
-            await googleUser?.authentication;
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
 
         // Google kimlik doğrulama bilgilerini al
         final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken,
-          idToken: googleAuth?.idToken,
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
         );
 
         // Firebase Authentication'a giriş yap
@@ -74,20 +73,15 @@ class FirebaseAuthService implements AuthBase {
         // Oluşturulan kullanıcıyı döndür
         final User? user = userCredential.user;
         if (user != null) {
-          return UserModel(
-            userId: user.uid,
-            email: user.email.toString(),
-            // Diğer kullanıcı bilgilerini burada alabilirsiniz
-          );
+          return _userFromFirebase(user);
         }
       } else {
-        // Google girişi iptal edildiğinde null döndür
         return null;
       }
 
       return null;
     } catch (e) {
-      print('Google ile giriş yaparken hata oluştu: $e');
+      debugPrint('Google ile giriş yaparken hata oluştu: $e');
       return null;
     }
   }

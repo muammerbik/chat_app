@@ -13,7 +13,7 @@ class FakeAuthService implements AuthBase {
   @override
   Future<UserModel> singInAnonymously() async {
     return await Future.delayed(
-      Duration(seconds: 2),
+      const Duration(seconds: 2),
       () => UserModel(userId: userId, email: "fake@gmail.com"),
     );
   }
@@ -26,7 +26,7 @@ class FakeAuthService implements AuthBase {
   @override
   Future<UserModel?> googleWithSingIn() async {
     return await Future.delayed(
-      Duration(seconds: 2),
+      const Duration(seconds: 2),
       () => UserModel(userId: userId, email: "fake@gmail.com"),
     );
   }
@@ -43,7 +43,6 @@ class FakeAuthService implements AuthBase {
     throw UnimplementedError();
   }
   
-  @override
   Future<UserModel?> signInWithGoogle() {
     // TODO: implement signInWithGoogle
     throw UnimplementedError();

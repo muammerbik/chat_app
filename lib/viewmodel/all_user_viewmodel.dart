@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
@@ -24,8 +26,9 @@ class AllUserViewModel with ChangeNotifier {
   List<UserModel> get tumKullanicilerListesi => _allPersonList;
 
   bool _hasMore = true;
+
   UserModel? _ensonGetirilenUser;
-  static final sayfaBasinaGonderi = 10;
+  static const sayfaBasinaGonderi = 10;
 
   AllUserViewModel() {
     _allPersonList = [];
@@ -62,12 +65,12 @@ class AllUserViewModel with ChangeNotifier {
       getUserWithPagination(_ensonGetirilenUser, true);
     } else {
       await Future.delayed(
-        Duration(seconds: 2),
+        const Duration(seconds: 2),
       );
     }
   }
 
-  Future<Null> refreshIndicator() async {
+  Future<void> refreshIndicator() async {
     _hasMore = true;
     _ensonGetirilenUser = null;
     _allPersonList = [];

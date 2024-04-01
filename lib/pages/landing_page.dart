@@ -13,7 +13,7 @@ class LandingPage extends StatelessWidget {
     
     if (userViewmodel.state == ViewState.idly) {
       if (userViewmodel.userModel == null) {
-        return SingInScreenView();
+        return const SingInScreenView();
       } else {
         return HomePage(user: userViewmodel.userModel,);
       }

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/konusma_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
@@ -62,7 +63,6 @@ class Repository implements AuthBase {
     } else {
       UserModel? usermodel = await firebaseAuthService.googleWithSingIn();
       if (usermodel != null) {
-        // google ile giriş yaptıktan sonra  verileri firebase firestore kaydettim. Ardından kaydedilen verileri okudum terminalde gösterdim.
         bool result = await fireStoreService.saveUser(usermodel);
         if (result) {
           return await fireStoreService.readUser(usermodel.userId);
@@ -129,7 +129,7 @@ class Repository implements AuthBase {
   Stream<List<MesajModel>> getMessagers(
       String currentUserId, String sohbetEdilenUserId) {
     if (appMode == AppMode.DEBUG) {
-      return Stream.empty();
+      return const Stream.empty();
     } else {
       return fireStoreService.getMessages(currentUserId, sohbetEdilenUserId);
     }
@@ -147,26 +147,26 @@ class Repository implements AuthBase {
     if (appMode == AppMode.DEBUG) {
       return [];
     } else {
-      DateTime _zaman = await fireStoreService.showTime(userId);
+      DateTime zaman = await fireStoreService.showTime(userId);
       var konusmaListesi = await fireStoreService.getAllConversations(userId);
       //konusmaModel sınıfımda kullanıcının username ve profilUrl değerini tutmadığım için, bu değerleri userModel sınıfından alıp kullanmaya çalışaçağım.bu nedenle yukarıda her yerden erişebileceğim tumKullanicilarListesi  listesini olusturdum.daha sonra userModeldeki bu verileri konusmaModele atayarak verileri istediğim verilere erişim sağladım.aşagıda  intarnete çıkmadan ve çıkarak ortamın durumuna göre verilere erişim sağlanıyor.//
       for (var oankiKonusma in konusmaListesi) {
         var userListesindekiKullanici =
             listedeUserBul(oankiKonusma.kimle_konusuyor);
         if (userListesindekiKullanici != null) {
-          print("VERİLER LOCAL CACHEDEN OKUNDU");
+          debugPrint("VERİLER LOCAL CACHEDEN OKUNDU");
           oankiKonusma.konusulanUserName = userListesindekiKullanici.userName;
           oankiKonusma.konusulanUserProfilUrl =
               userListesindekiKullanici.profilUrl;
         } else {
-          print("VERİLER VERİTABANINDAN  OKUNDU");
+          debugPrint("VERİLER VERİTABANINDAN  OKUNDU");
           var veritabanindanOkunanUser =
               await fireStoreService.readUser(oankiKonusma.kimle_konusuyor);
           oankiKonusma.konusulanUserName = veritabanindanOkunanUser.userName;
           oankiKonusma.konusulanUserProfilUrl =
               veritabanindanOkunanUser.profilUrl;
         }
-        timeAgoHesapla(oankiKonusma, _zaman);
+        timeAgoHesapla(oankiKonusma, zaman);
       }
       return konusmaListesi;
     }
@@ -174,8 +174,8 @@ class Repository implements AuthBase {
 
   void timeAgoHesapla(KonusmaModel oankiKonusma, DateTime zaman) {
     oankiKonusma.son_okuma_zamani = zaman;
-    var _duration = zaman.difference(oankiKonusma.olusturulma_tarihi.toDate());
-    oankiKonusma.saat_farki = timeago.format(zaman.subtract(_duration));
+    var duration = zaman.difference(oankiKonusma.olusturulma_tarihi.toDate());
+    oankiKonusma.saat_farki = timeago.format(zaman.subtract(duration));
   }
 
   UserModel? listedeUserBul(String userId) {
@@ -193,10 +193,10 @@ class Repository implements AuthBase {
     if (appMode == AppMode.DEBUG) {
       return [];
     } else {
-      List<UserModel> _userList = await fireStoreService.getUserWithPagination(
+      List<UserModel> userList = await fireStoreService.getUserWithPagination(
           ensonGetirilenUser, getirilecekElemanSayisi);
-      tumKullanicilarListesi.addAll(_userList);
-      return _userList;
+      tumKullanicilarListesi.addAll(userList);
+      return userList;
     }
   }
 

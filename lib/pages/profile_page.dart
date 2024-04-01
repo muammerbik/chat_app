@@ -41,18 +41,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    UserViewmodel _userModel = Provider.of<UserViewmodel>(context);
-    textEditingController.text = _userModel.userModel!.userName!;
+    UserViewmodel userModel = Provider.of<UserViewmodel>(context);
+    textEditingController.text = userModel.userModel!.userName!;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(profil),
+        title: const Text(profil),
         actions: [
           TextButton(
             onPressed: () {
               requestConfirmationExit(context);
             },
-            child: Text(exit),
+            child: const Text(exit),
           ),
         ],
       ),
@@ -65,20 +65,20 @@ class _ProfilePageState extends State<ProfilePage> {
                   showModalBottomSheet(
                     context: context,
                     builder: (context) {
-                      return Container(
+                      return SizedBox(
                         height: 170.h,
                         child: Column(
                           children: [
                             ListTile(
-                                title: Text(takePicture),
-                                leading: Icon(Icons.camera),
+                                title: const Text(takePicture),
+                                leading: const Icon(Icons.camera),
                                 onTap: () {
                                   imageFromCamera();
                                   Navigator.of(context).pop();
                                 }),
                             ListTile(
-                              title: Text(selectFromGallery),
-                              leading: Icon(Icons.image),
+                              title: const Text(selectFromGallery),
+                              leading: const Icon(Icons.image),
                               onTap: () {
                                 imageFromGallery();
                                 Navigator.of(context).pop();
@@ -102,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       radius: 80.r,
                       backgroundColor: lightIndigo,
                       backgroundImage: profilePhoto == null
-                          ? NetworkImage(_userModel.userModel!.profilUrl!)
+                          ? NetworkImage(userModel.userModel!.profilUrl!)
                           : FileImage(profilePhoto!) as ImageProvider,
                     ),
                   ),
@@ -111,9 +111,9 @@ class _ProfilePageState extends State<ProfilePage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 child: TextFormField(
-                  initialValue: _userModel.userModel!.email,
+                  initialValue: userModel.userModel!.email,
                   readOnly: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: enterEmail,
                     hintText: emailText,
                     border: OutlineInputBorder(),
@@ -124,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 child: TextFormField(
                   controller: textEditingController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: enterUsername,
                     hintText: titleUsername,
                     border: OutlineInputBorder(),
@@ -165,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future requestConfirmationExit(BuildContext context) async {
-    final result = await PlatformResponsiveAlertDialog(
+    final result = await const PlatformResponsiveAlertDialog(
       title: logOut,
       contents: logOutContent,
       okButonText: yes,
@@ -177,21 +177,21 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void updateUserName(BuildContext context) async {
-    UserViewmodel _userModel =
+    UserViewmodel userModel =
         Provider.of<UserViewmodel>(context, listen: false);
-    if (_userModel.userModel!.userName != textEditingController.text) {
-      var updateResult = await _userModel.updateUserName(
-          _userModel.userModel!.userId, textEditingController.text);
+    if (userModel.userModel!.userName != textEditingController.text) {
+      var updateResult = await userModel.updateUserName(
+          userModel.userModel!.userId, textEditingController.text);
 
       if (updateResult) {
-        PlatformResponsiveAlertDialog(
+        const PlatformResponsiveAlertDialog(
                 title: successfulTransaction,
                 contents: changesSaved,
                 okButonText: ok)
             .showAllDialog(context);
       } else {
-        textEditingController.text == _userModel.userModel!.userName;
-        PlatformResponsiveAlertDialog(
+        textEditingController.text == userModel.userModel!.userName;
+        const PlatformResponsiveAlertDialog(
                 title: userLoginEror,
                 contents: usernameContentError,
                 okButonText: ok)
@@ -219,19 +219,17 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> profilePhotoGuncelle(BuildContext context) async {
-    UserViewmodel _userModel =
+    UserViewmodel userModel =
         Provider.of<UserViewmodel>(context, listen: false);
     if (profilePhoto != null) {
-      var url = await _userModel.uploadFile(
-          _userModel.userModel!.userId, "profil_photo", profilePhoto);
-      print("gelen url = " + url);
-      if (url != null) {
-        PlatformResponsiveAlertDialog(
-                title: profilephoto,
-                contents: profilePhotoContent,
-                okButonText: ok)
-            .showAllDialog(context);
-      }
-    }
+      var url = await userModel.uploadFile(
+          userModel.userModel!.userId, "profil_photo", profilePhoto);
+      debugPrint("gelen url = $url");
+      const PlatformResponsiveAlertDialog(
+              title: profilephoto,
+              contents: profilePhotoContent,
+              okButonText: ok)
+          .showAllDialog(context);
+        }
   }
 }

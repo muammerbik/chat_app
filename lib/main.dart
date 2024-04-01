@@ -36,10 +36,8 @@ class MyApp extends StatelessWidget {
         designSize: const Size(428, 926),
         builder: (_, child) => MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: appName,
-          
-          theme: ThemeData(
-            
+          title: appName, 
+          theme: ThemeData(   
               visualDensity: VisualDensity.adaptivePlatformDensity,
               appBarTheme: const AppBarTheme(backgroundColor: lightIndigo),
               useMaterial3: true,

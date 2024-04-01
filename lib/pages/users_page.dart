@@ -13,7 +13,7 @@ class UsersPage extends StatefulWidget {
 }
 
 class _UsersPageState extends State<UsersPage> {
-  bool _isLoading = false; //intarnetten veri geliyormuyu kontrol etsin.
+  final bool _isLoading = false; //intarnetten veri geliyormuyu kontrol etsin.
   ScrollController scrollController = ScrollController();
 
   @override
@@ -36,10 +36,8 @@ class _UsersPageState extends State<UsersPage> {
       body: Consumer<AllUserViewModel>(
         builder: (context, model, child) {
           if (model.state == AllUserViewState.Busy) {
-            return Center(
-              child: RefreshIndicator(
-                  onRefresh: () => model.refreshIndicator(),
-                  child: CircularProgressIndicator()),
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           } else if (model.state == AllUserViewState.Loaded) {
             return RefreshIndicator(
@@ -50,7 +48,7 @@ class _UsersPageState extends State<UsersPage> {
                     ? model.tumKullanicilerListesi.length + 1
                     : model.tumKullanicilerListesi.length,
                 itemBuilder: (context, index) {
-                  if (model.tumKullanicilerListesi == 0) {
+                  if (model.tumKullanicilerListesi.length == 1) {
                     return kulliciYokUI();
                   } else if (model.hasMoreLoading &&
                       index == model.tumKullanicilerListesi.length) {
@@ -94,20 +92,20 @@ class _UsersPageState extends State<UsersPage> {
   yeniElemanlarYukleniyorIndicator() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-      child: Center(
+      child: const Center(
         child: CircularProgressIndicator(),
       ),
     );
   }
 
   userListesiElemanlariOlustur(index) {
-    UserViewmodel _userModel =
+    UserViewmodel userModel =
         Provider.of<UserViewmodel>(context, listen: false);
     AllUserViewModel tumKullanicilerViewmodel =
         Provider.of<AllUserViewModel>(context, listen: false);
 
     var oankiUser = tumKullanicilerViewmodel.tumKullanicilerListesi[index];
-    if (oankiUser.userId == _userModel.userModel!.userId) {
+    if (oankiUser.userId == userModel.userModel!.userId) {
       return Container();
     }
     return GestureDetector(
@@ -115,7 +113,7 @@ class _UsersPageState extends State<UsersPage> {
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
             builder: (context) => KonusmaPage(
-                currentUser: _userModel.userModel!,
+                currentUser: userModel.userModel!,
                 sohbetEdilenUser: oankiUser),
           ),
         );

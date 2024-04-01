@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/konusma_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
@@ -20,7 +21,6 @@ class FirestoreServices implements DbBase {
     } else {
       return true;
     }
-
   }
 
   @override
@@ -30,7 +30,7 @@ class FirestoreServices implements DbBase {
     Map<String, dynamic>? okunanUserBilgileriMap =
         okunanUser.data() as Map<String, dynamic>?;
     UserModel okunanUserNesnesi = UserModel.fromMap(okunanUserBilgileriMap!);
-    print("okunan user nesnesi" + okunanUserNesnesi.toString());
+    debugPrint("okunan user nesnesi$okunanUserNesnesi");
     return okunanUserNesnesi;
   }
 
@@ -40,7 +40,7 @@ class FirestoreServices implements DbBase {
         .collection("users")
         .where("userName", isEqualTo: newUserName)
         .get();
-    if (users.docs.length >= 1) {
+    if (users.docs.isNotEmpty) {
       return false;
     } else {
       await firestore
@@ -51,6 +51,7 @@ class FirestoreServices implements DbBase {
     }
   }
 
+  @override
   Future<bool> updateProfilePhoto(String userId, String profilPhotoUrl) async {
     await firestore
         .collection("users")
@@ -60,7 +61,7 @@ class FirestoreServices implements DbBase {
   }
 
   @override
-//sohbet ettiğim tüm kullanıcıları bir listeye aldım ve bu listeyi sohbetPage de göstereceğim.
+//sohbet ettiğim tüm kullanıcıları bir listeye aldım ve bu listeyi chatPage de göstereceğim.
   Future<List<KonusmaModel>> getAllConversations(String userId) async {
     QuerySnapshot querySnapshot = await firestore
         .collection("konusanlar")
@@ -73,8 +74,8 @@ class FirestoreServices implements DbBase {
     for (DocumentSnapshot talkUser in querySnapshot.docs) {
       var data = talkUser.data();
       if (data is Map<String, dynamic>) {
-        KonusmaModel _talkUser = KonusmaModel.fromMap(data);
-        conversationsList.add(_talkUser);
+        KonusmaModel talkUser = KonusmaModel.fromMap(data);
+        conversationsList.add(talkUser);
       }
     }
     return conversationsList;
@@ -86,7 +87,7 @@ class FirestoreServices implements DbBase {
       String currentUserId, String sohbetEdilenUserId) {
     var snapshot = firestore
         .collection("konusanlar")
-        .doc(currentUserId + "--" + sohbetEdilenUserId)
+        .doc("$currentUserId--$sohbetEdilenUserId")
         .collection("mesajlar")
         .orderBy("date")
         .snapshots();
@@ -108,9 +109,9 @@ class FirestoreServices implements DbBase {
     var mesajId = firestore.collection("konusanlar").doc().id;
     //yazılan mesajı içinde barındıracak bir alt id olusturdum.
     //mesajlaşma karşıklı olacağı için ,karşılıklı olarak yazılacak mesajları kaydettim.
-    var myDocumentId = kaydedilecekMesaj.kimden + "--" + kaydedilecekMesaj.kime;
+    var myDocumentId = "${kaydedilecekMesaj.kimden}--${kaydedilecekMesaj.kime}";
     var receiverDocumentId =
-        kaydedilecekMesaj.kime + "--" + kaydedilecekMesaj.kimden;
+        "${kaydedilecekMesaj.kime}--${kaydedilecekMesaj.kimden}";
     var kaydedilecekIdninMapi = kaydedilecekMesaj.toMap();
 
     await firestore
@@ -119,7 +120,7 @@ class FirestoreServices implements DbBase {
         .collection("mesajlar")
         .doc(mesajId)
         .set(kaydedilecekIdninMapi);
-    kaydedilecekIdninMapi.update("bendenMi", (value) => false);
+         kaydedilecekIdninMapi.update("bendenMi", (value) => false);
 
     await firestore
         .collection("konusanlar")
@@ -150,42 +151,42 @@ class FirestoreServices implements DbBase {
   }
 
   @override
-  Future<List<UserModel>> getUserWithPagination(
-      UserModel? enSoongetirilenUser, int getirilecekElemanSayisi) async {
-    QuerySnapshot _querySnapshot;
-    List<UserModel> _allUserList = [];
+  Future<List<UserModel>> getUserWithPagination(UserModel? enSoongetirilenUser, int getirilecekElemanSayisi) async {
+    QuerySnapshot querySnapshot;
+    List<UserModel> allUserList = [];
     if (enSoongetirilenUser == null) {
       // ilk gelecek on eleman için
-      print("ilk defa kullanıcılar getirliliyor");
-      _querySnapshot = await FirebaseFirestore.instance
+      debugPrint("ilk defa kullanıcılar getirliliyor");
+      querySnapshot = await FirebaseFirestore.instance
           .collection("users")
           .orderBy("userName")
           .limit(getirilecekElemanSayisi)
           .get();
     } else {
       // ilk gelen 10 elemandan sonraki elemanlar için. enson gelen isimden sonra  yeni elemanlar gelecekk,
-      print("Sonraki kullanıcılar getirliliyor");
-      _querySnapshot = await FirebaseFirestore.instance
+      debugPrint("Sonraki kullanıcılar getirliliyor");
+      querySnapshot = await FirebaseFirestore.instance
           .collection("users")
           .orderBy("userName")
           .startAfter([enSoongetirilenUser.userName])
           .limit(getirilecekElemanSayisi)
           .get();
       await Future.delayed(
-        Duration(seconds: 1),
+        const Duration(seconds: 1),
       );
     }
-    for (DocumentSnapshot snap in _querySnapshot.docs) {
+    for (DocumentSnapshot snap in querySnapshot.docs) {
       var data = snap.data();
       if (data is Map<String, dynamic>) {
-        UserModel _tekUser = UserModel.fromMap(data);
-        _allUserList!.add(_tekUser);
-        print("getirilien user name " + _tekUser.userName!);
+        UserModel tekUser = UserModel.fromMap(data);
+        allUserList.add(tekUser);
+        debugPrint("getirilien user name ${tekUser.userName!}");
       }
     }
-    return _allUserList;
+    return allUserList;
   }
 
+  @override
   Future<DateTime> showTime(String userId) async {
     await firestore
         .collection("server")
@@ -204,8 +205,8 @@ class FirestoreServices implements DbBase {
   @override
   Future<bool> chatDelete(
       String currentUserId, String sohbetEdilenUserId) async {
-    String chatId = currentUserId + "--" + sohbetEdilenUserId;
-    String reverseChatId = sohbetEdilenUserId + "--" + currentUserId;
+    String chatId = "$currentUserId--$sohbetEdilenUserId";
+    String reverseChatId = "$sohbetEdilenUserId--$currentUserId";
 
     try {
       // Konuşmayı sil
@@ -233,7 +234,7 @@ class FirestoreServices implements DbBase {
 
       return true;
     } catch (e) {
-      print("Sohbet silme hatası: $e");
+      debugPrint("Sohbet silme hatası: $e");
       return false;
     }
   }

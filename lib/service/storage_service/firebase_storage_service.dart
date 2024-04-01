@@ -6,8 +6,7 @@ class FirebaseStorageService implements FireBaseStorageBase {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   @override
-  Future<String> uploadFile(
-      String userId, String fileType, File yuklenecekDosya) async {
+  Future<String> uploadFile(String userId, String fileType, File yuklenecekDosya) async {
     Reference reference = _firebaseStorage
         .ref()
         .child(userId)

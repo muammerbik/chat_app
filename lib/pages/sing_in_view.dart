@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class SingInScreenView extends StatelessWidget {
+  const SingInScreenView({super.key});
+
   Future<void> singInGuest(BuildContext context) async {
     final userViewmodel = Provider.of<UserViewmodel>(context, listen: false);
     var userCredential = await userViewmodel.singInAnonymously();
@@ -35,7 +37,7 @@ class SingInScreenView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 150.h),
-          Text(
+          const Text(
             appName,
             style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
           ),

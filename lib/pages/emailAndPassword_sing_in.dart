@@ -45,7 +45,7 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
       resizeToAvoidBottomInset: false,
       backgroundColor: white,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           emailPasswordSingIn,
           style: TextStyle(fontSize: 20),
         ),
@@ -68,6 +68,7 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
                           }
                           return null;
                         },
+                        initialValue: "muammercan@gmail.com",
                         autofocus: true,
                         //  initialValue: "mamercan@gmail.com",
                         keyboardType: TextInputType.emailAddress,
@@ -89,6 +90,7 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
                           }
                           return null; // Geçerli bir giriş olduğunda null döndürülür
                         },
+                        initialValue: "123123",
                         obscureText: true,
                         // initialValue: "123123112",
                         decoration: const InputDecoration(
@@ -137,11 +139,12 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
         try {
           UserModel? loginUser =
               await usermodel.emailAndPasswordWithSingIn(email, password);
-          if (loginUser != null)
-            print(
-              " oturum açan user id" + loginUser.userId.toString(),
+          if (loginUser != null) {
+            debugPrint(
+              " oturum açan user id${loginUser.userId}",
             );
-        } on FirebaseAuthException catch (e) {
+          }
+        } on FirebaseAuthException {
           debugPrint("widget  oturum açmada hata yakalandı ");
           const PlatformResponsiveAlertDialog(
             title: userLoginEror,
@@ -153,11 +156,12 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
         try {
           UserModel? createUser =
               await usermodel.createUserWithSingIn(email, password);
-          if (createUser != null)
-            print(
-              " kayıt olan user id" + createUser.userId.toString(),
+          if (createUser != null) {
+            debugPrint(
+              " kayıt olan user id${createUser.userId}",
             );
-        } on FirebaseAuthException catch (e) {
+          }
+        } on FirebaseAuthException {
           debugPrint("widget kulllanici  oluşturma hata yakalandi");
           const PlatformResponsiveAlertDialog(
             title: loginError,

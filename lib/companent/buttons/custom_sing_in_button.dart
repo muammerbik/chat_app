@@ -9,7 +9,7 @@ class CustomSingInButton extends StatefulWidget {
   final Function() onTop;
   final Color color;
   final Widget? iconWidget;
-  const CustomSingInButton({
+  const CustomSingInButton({super.key, 
     this.textColor,
     required this.text,
     required this.onTop,

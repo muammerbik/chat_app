@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class KonusmaPage extends StatefulWidget {
   final UserModel currentUser;
   final UserModel sohbetEdilenUser;
-  const KonusmaPage({
+  const KonusmaPage({super.key, 
     required this.currentUser,
     required this.sohbetEdilenUser,
   });
@@ -23,7 +23,13 @@ class KonusmaPage extends StatefulWidget {
 
 class _KonusmaPageState extends State<KonusmaPage> {
   TextEditingController textEditingController = TextEditingController();
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+  
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -31,12 +37,13 @@ class _KonusmaPageState extends State<KonusmaPage> {
     _scrollController.dispose();
     super.dispose();
   }
+  
 
   @override
   Widget build(BuildContext context) {
-    UserViewmodel _userModel = Provider.of<UserViewmodel>(context);
-    UserModel _currentUser = widget.currentUser;
-    UserModel _sohbetEdilenUser = widget.sohbetEdilenUser;
+    UserViewmodel userModel = Provider.of<UserViewmodel>(context);
+    UserModel currentUser = widget.currentUser;
+    UserModel sohbetEdilenUser = widget.sohbetEdilenUser;
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +52,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
           children: [
             CircleAvatar(
                 backgroundImage:
-                    NetworkImage(widget.sohbetEdilenUser.profilUrl! ?? ""),
+                    NetworkImage(widget.sohbetEdilenUser.profilUrl!),
                 backgroundColor: grey.shade100),
             Expanded(
               child: Padding(
@@ -64,11 +71,11 @@ class _KonusmaPageState extends State<KonusmaPage> {
           children: [
             Expanded(
               child: StreamBuilder<List<MesajModel>>(
-                stream: _userModel.getMessagers(
-                    _currentUser.userId, _sohbetEdilenUser.userId),
+                stream: userModel.getMessagers(
+                    currentUser.userId, sohbetEdilenUser.userId),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -121,18 +128,18 @@ class _KonusmaPageState extends State<KonusmaPage> {
                       onPressed: () async {
                         if (textEditingController.text.trim().isNotEmpty) {
                           MesajModel kaydedilecekMesaj = MesajModel(
-                              kimden: _currentUser.userId,
-                              kime: _sohbetEdilenUser.userId,
+                              kimden: currentUser.userId,
+                              kime: sohbetEdilenUser.userId,
                               bendenMi: true,
                               mesaj: textEditingController.text);
 
                           var result =
-                              await _userModel.saveMessages(kaydedilecekMesaj);
+                              await userModel.saveMessages(kaydedilecekMesaj);
                           if (result) {
                             textEditingController.clear();
                             _scrollController.animateTo(
                               0, // ListView'in en altına kaydır
-                              duration: Duration(milliseconds: 10),
+                              duration: const Duration(milliseconds: 10),
                               curve: Curves.easeOut,
                             );
                           }
@@ -159,7 +166,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
       timeAndMinuteValue =
           showTimeAndMinute(oankiMesaj.date ?? Timestamp(1, 1));
     } catch (e) {
-      print("mesaj gönderimde zaman hatası var " + e.toString());
+      debugPrint("mesaj gönderimde zaman hatası var $e");
     }
 
     if (fromMe) {
@@ -213,7 +220,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
                   backgroundImage:
                       NetworkImage(widget.sohbetEdilenUser.profilUrl!),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Flexible(
@@ -245,8 +252,8 @@ class _KonusmaPageState extends State<KonusmaPage> {
   }
 
   String showTimeAndMinute(Timestamp? date) {
-    var _formatter = DateFormat.Hm();
-    var formatlanmisTarih = _formatter.format(date!.toDate());
+    var formatter = DateFormat.Hm();
+    var formatlanmisTarih = formatter.format(date!.toDate());
     return formatlanmisTarih;
   }
 }

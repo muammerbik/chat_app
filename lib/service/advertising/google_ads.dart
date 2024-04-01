@@ -32,7 +32,7 @@ class GoogleAds with ChangeNotifier {
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          print("reklam yüklendi");
+          debugPrint("reklam yüklendi");
           interstitialAd = ad;
           if (showAfterLoad) showInterstitialAd();
         },
