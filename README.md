@@ -1,4 +1,4 @@
-# flutter_firebase_crashlytics_usage
+# chat_app
 
 A new Flutter project.
 
