@@ -113,8 +113,7 @@ class _UsersPageState extends State<UsersPage> {
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
             builder: (context) => KonusmaPage(
-                currentUser: userModel.userModel!,
-                sohbetEdilenUser: oankiUser),
+                currentUser: userModel.userModel!, sohbetEdilenUser: oankiUser),
           ),
         );
       },
@@ -134,7 +133,7 @@ class _UsersPageState extends State<UsersPage> {
         ),
       ),
     );
-  }
+  } 
 
   void dahaFazlaKullaniciGetir() async {
     if (_isLoading == false) {

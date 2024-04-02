@@ -63,14 +63,12 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
                           email = newValue!;
                         },
                         validator: (value) {
-                          if (value == null || value.isEmpty ) {
+                          if (value == null || value.isEmpty) {
                             return 'E-mail cannot be empty! and enter valid email';
                           }
                           return null;
                         },
-                        initialValue: "muammercan@gmail.com",
                         autofocus: true,
-                        //  initialValue: "mamercan@gmail.com",
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                           hintText: emailText,
@@ -88,11 +86,9 @@ class _EmailAndPassworWithSingInState extends State<EmailAndPassworWithSingIn> {
                           if (value == null || value.isEmpty) {
                             return 'password cannot be empty!';
                           }
-                          return null; // Geçerli bir giriş olduğunda null döndürülür
+                          return null;
                         },
-                        initialValue: "123123",
                         obscureText: true,
-                        // initialValue: "123123112",
                         decoration: const InputDecoration(
                           hintText: passwordText,
                           labelText: enterPassword,

@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
@@ -124,7 +124,7 @@ class _KonusmaPageState extends State<KonusmaPage> {
                         Icons.navigation,
                         size: 35,
                         color: white,
-                      ), //Butona tıklandığında stream yapısıyla beraber ekranda  yazılacak mesajları kaydediyorum.
+                      ), 
                       onPressed: () async {
                         if (textEditingController.text.trim().isNotEmpty) {
                           MesajModel kaydedilecekMesaj = MesajModel(

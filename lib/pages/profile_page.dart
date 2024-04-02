@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     context: context,
                     builder: (context) {
                       return SizedBox(
-                        height: 170.h,
+                        height: 200.h,
                         child: Column(
                           children: [
                             ListTile(
@@ -230,6 +230,6 @@ class _ProfilePageState extends State<ProfilePage> {
               contents: profilePhotoContent,
               okButonText: ok)
           .showAllDialog(context);
-        }
+    }
   }
 }

@@ -83,8 +83,7 @@ class FirestoreServices implements DbBase {
 
   //Stream yapısı anlık olarak verileri dinlemek için kullanılır, İçerisinde mesajlar olan bir liste döndürdüm.Sohbetteki tüm mesajları almamı sağlayacak.
   @override
-  Stream<List<MesajModel>> getMessages(
-      String currentUserId, String sohbetEdilenUserId) {
+  Stream<List<MesajModel>> getMessages(String currentUserId, String sohbetEdilenUserId) {
     var snapshot = firestore
         .collection("konusanlar")
         .doc("$currentUserId--$sohbetEdilenUserId")
@@ -110,8 +109,7 @@ class FirestoreServices implements DbBase {
     //yazılan mesajı içinde barındıracak bir alt id olusturdum.
     //mesajlaşma karşıklı olacağı için ,karşılıklı olarak yazılacak mesajları kaydettim.
     var myDocumentId = "${kaydedilecekMesaj.kimden}--${kaydedilecekMesaj.kime}";
-    var receiverDocumentId =
-        "${kaydedilecekMesaj.kime}--${kaydedilecekMesaj.kimden}";
+    var receiverDocumentId ="${kaydedilecekMesaj.kime}--${kaydedilecekMesaj.kimden}";
     var kaydedilecekIdninMapi = kaydedilecekMesaj.toMap();
 
     await firestore
@@ -120,7 +118,7 @@ class FirestoreServices implements DbBase {
         .collection("mesajlar")
         .doc(mesajId)
         .set(kaydedilecekIdninMapi);
-         kaydedilecekIdninMapi.update("bendenMi", (value) => false);
+     kaydedilecekIdninMapi.update("bendenMi", (value) => false);
 
     await firestore
         .collection("konusanlar")
@@ -203,8 +201,7 @@ class FirestoreServices implements DbBase {
   }
 
   @override
-  Future<bool> chatDelete(
-      String currentUserId, String sohbetEdilenUserId) async {
+  Future<bool> chatDelete(String currentUserId, String sohbetEdilenUserId) async {
     String chatId = "$currentUserId--$sohbetEdilenUserId";
     String reverseChatId = "$sohbetEdilenUserId--$currentUserId";
 
@@ -220,15 +217,6 @@ class FirestoreServices implements DbBase {
           .collection("mesajlar")
           .get();
       for (var doc in messagesSnapshot.docs) {
-        await doc.reference.delete();
-      }
-
-      var reverseMessagesSnapshot = await firestore
-          .collection("konusanlar")
-          .doc(reverseChatId)
-          .collection("mesajlar")
-          .get();
-      for (var doc in reverseMessagesSnapshot.docs) {
         await doc.reference.delete();
       }
 

@@ -97,6 +97,7 @@ class _SohbetPageState extends State<SohbetPage> {
                             oankiTalk.kimle_konusuyor,
                           );
                           if (sonuc) {
+                            allTalks.removeAt(index);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 backgroundColor: lightIndigo,
@@ -181,8 +182,7 @@ class _SohbetPageState extends State<SohbetPage> {
 
   Future<void> refleshChat() async {
     setState(() {});
-    await Future.delayed(const Duration(
-        milliseconds: 500)); // Yenileme animasyonu için kısa bir bekleme süresi
+    await Future.delayed(const Duration(milliseconds: 500));
     setState(() {});
     return;
   }
