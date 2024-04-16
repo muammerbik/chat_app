@@ -1,4 +1,5 @@
 # chat_app
+This Flutter project includes a messaging app developed using Firebase. Users can send and receive instant messages, create chat rooms, or join existing ones. Additional features such as profile management and ad integration are also included. The app is built using Flutter and Firebase.
 
 ## Getting Started
 - firebase_core
