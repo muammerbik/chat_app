@@ -14,7 +14,6 @@ class Repository implements AuthBase {
   FirebaseAuthService firebaseAuthService = locator<FirebaseAuthService>();
   FirestoreServices fireStoreService = locator<FirestoreServices>();
   FirebaseStorageService firebaseStorage = locator<FirebaseStorageService>();
-
   List<UserModel> tumKullanicilarListesi = [];
 
   @override
