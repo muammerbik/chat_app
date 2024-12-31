@@ -1,16 +1,20 @@
 # chat_app
-
-A new Flutter project.
+This Flutter project includes a messaging app developed using Firebase. Users can send and receive instant messages, create chat rooms, or join existing ones. Additional features such as profile management and ad integration are also included. The app is built using Flutter and Firebase.
 
 ## Getting Started
+- firebase_core
+- firebase_auth
+- firebase_storage
+- cloud_firestore
+- google_mobile_ads
+- google_sign_in
+- get_it
+- provider
+- image_picker
+- image_cropper
+- permission_handler
+- intl
+- timeago
+- flutter_screenutil
+ 
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
