@@ -17,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
         child: SizedBox(
           width: 128.h,
           height: 128.w,
-          child: Image.asset("assets/icons/messenger.png.png"),
+          child: Image.asset("assets/icons/messenger.png"),
         ),
       ),
     );

@@ -10,6 +10,7 @@ const red = Colors.red;
 const transparent = Colors.transparent;
 const grey = Colors.grey;
 const lightIndigo = Color(0xFFE8EAF6);
+const Color customRed = Color(0xFFFF5232);
 //Text
 const appName = "Chat App";
 const singIn = "Sing-in";

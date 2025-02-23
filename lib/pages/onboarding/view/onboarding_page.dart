@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_sing_in_button.dart';
+import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_elevated_button.dart';
+import 'package:flutter_firebase_crashlytics_usage/companent/navigation_helper/navigation_halper.dart';
 import 'package:flutter_firebase_crashlytics_usage/constants/app_strings.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/emailAndPassword_sing_in.dart';
+import 'package:flutter_firebase_crashlytics_usage/pages/sign_in/view/sign_in_page.dart';
+import 'package:flutter_firebase_crashlytics_usage/pages/sign_up/view/sign_up_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class SingInScreenView extends StatelessWidget {
-  const SingInScreenView({super.key});
+class OnboardingPageView extends StatelessWidget {
+  const OnboardingPageView({super.key});
 
   Future<void> singInGuest(BuildContext context) async {
     final userViewmodel = Provider.of<UserViewmodel>(context, listen: false);
@@ -32,17 +35,82 @@ class SingInScreenView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: 150.h),
-          const Text(
-            appName,
-            style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
-          ),
-          SizedBox(height: 50.h),
-          Align(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Spacer(),
+            Image.asset(
+              "assets/images/messaging.png",
+              height: MediaQuery.of(context).size.height * 0.4,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Text(
+                "Arkadaşlarınla güvenli ve\nhızlı bir şekilde sohbet et!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Text(
+                "Mesajlaşmanın en kolay yolu",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 16.sp,
+                ),
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: CustomElevatedButtonView(
+                text: "Giriş Yap",
+                color: customRed,
+                textColor: Colors.white,
+                onTop: () {
+                  /*  Navigation.push(page: SignInPage()); */
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SignInPage(),
+                  ));
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: CustomElevatedButtonView(
+                text: "Hesap Oluştur",
+                color: Colors.white,
+                textColor: customRed,
+                borderColor: customRed,
+                onTop: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SignUpPage(),
+                  ));
+                },
+              ),
+            ),
+            const SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+   /*  Align(
             alignment: Alignment.center,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -71,7 +139,7 @@ class SingInScreenView extends StatelessWidget {
                       text: googlSsingIn,
                       color: white,
                       onTop: () {
-                        signInWithGoogle(context);
+                     
                       },
                       iconWidget: Image.asset(
                         "assets/images/google.png",
@@ -96,9 +164,5 @@ class SingInScreenView extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+          ), */
+       

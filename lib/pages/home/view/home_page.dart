@@ -5,7 +5,7 @@ import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_navi
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/tab_item.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
-import 'package:flutter_firebase_crashlytics_usage/pages/profile_page.dart';
+import 'package:flutter_firebase_crashlytics_usage/pages/profile/view/profile_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/sohbet_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/users_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/auth_service/auth_base.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_crashlytics_usage/pages/home_page.dart';
-import 'package:flutter_firebase_crashlytics_usage/pages/sing_in_view.dart';
+import 'package:flutter_firebase_crashlytics_usage/pages/home/view/home_page.dart';
+import 'package:flutter_firebase_crashlytics_usage/pages/onboarding/view/onboarding_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,7 @@ class LandingPage extends StatelessWidget {
     
     if (userViewmodel.state == ViewState.idly) {
       if (userViewmodel.userModel == null) {
-        return const SingInScreenView();
+        return const OnboardingPageView();
       } else {
         return HomePage(user: userViewmodel.userModel,);
       }
