@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
+import 'package:flutter_firebase_crashlytics_usage/constants/app_strings.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/konusma_page.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/all_user_viewmodel.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';

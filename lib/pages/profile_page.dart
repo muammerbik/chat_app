@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/buttons/custom_sing_in_button.dart';
 import 'package:flutter_firebase_crashlytics_usage/companent/platform_widgets/platform_responsive_alert_dialog.dart';
-import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
+import 'package:flutter_firebase_crashlytics_usage/constants/app_strings.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
 import 'package:flutter_firebase_crashlytics_usage/service/advertising/google_ads.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';

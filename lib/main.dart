@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
+import 'package:flutter_firebase_crashlytics_usage/constants/app_strings.dart';
 import 'package:flutter_firebase_crashlytics_usage/firebase_options.dart';
 import 'package:flutter_firebase_crashlytics_usage/get_it/get_it.dart';
 import 'package:flutter_firebase_crashlytics_usage/pages/landing_page.dart';

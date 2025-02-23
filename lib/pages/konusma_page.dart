@@ -1,7 +1,7 @@
 
 import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_crashlytics_usage/constants/constants.dart';
+import 'package:flutter_firebase_crashlytics_usage/constants/app_strings.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/mesaj_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/model/user_model.dart';
 import 'package:flutter_firebase_crashlytics_usage/viewmodel/user_viewmodel.dart';
