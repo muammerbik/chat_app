@@ -1,4 +1,4 @@
-package com.example.flutter_firebase_crashlytics_usage
+package com.chat.messenger
 
 import io.flutter.embedding.android.FlutterActivity
 

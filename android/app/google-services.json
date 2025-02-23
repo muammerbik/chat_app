@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:544594598267:android:d5c9c0349931811e6345de",
         "android_client_info": {
-          "package_name": "com.example.flutter_firebase_crashlytics_usage"
+          "package_name": "com.chat.messenger"
         }
       },
       "oauth_client": [

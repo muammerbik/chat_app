@@ -1,0 +1,3 @@
+class NotificationHandler {
+  NotificationHandler._();
+}
